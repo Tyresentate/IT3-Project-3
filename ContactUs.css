@@ -1,0 +1,128 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Navbar Layout */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  border-bottom: 1px solid #ddd;
+  height: 100px; /* keeps logo and icons aligned */
+}
+
+/* Logo Styling */
+.logo img {
+   width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+.nav-links .active {
+  border-bottom: 2px solid #000;
+}
+
+/* Login/Register Section */
+.login-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row-reverse; /* Puts icon on the right */
+}
+
+.login-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.login-icon a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+/* Contact Us Page Layout */
+.contact-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+}
+
+/* Contact Form Section */
+.contact-form {
+  flex: 1;
+  max-width: 50%;
+}
+
+.contact-form h1 {
+  color: #145e67;
+}
+
+.subtitle {
+  color: #4a7a82;
+  margin-bottom: 30px;
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.contact-form button {
+  width: 80px;
+  background-color: #4a7a82;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+/* Contact Information Section */
+.contact-info {
+  flex: 1;
+  padding-left: 50px;
+  font-size: 15px;
+}
+
+.contact-info p {
+  margin-bottom: 25px;
+}
+
+.contact-info strong {
+  color: #145e67;
+}
