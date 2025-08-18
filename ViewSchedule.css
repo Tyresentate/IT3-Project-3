@@ -1,0 +1,157 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+.login-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Page Title */
+.schedule-container {
+  padding: 30px 50px;
+}
+
+.schedule-container h1 {
+  color: #145e67;
+  margin-bottom: 20px;
+}
+
+/* Calendar Bar */
+.calendar-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #eee;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.day:hover {
+  background: #e0f7fa;
+  transform: scale(1.05);
+}
+
+.day.active {
+  background: #145e67;
+  color: #fff;
+}
+
+/* Schedule Layout */
+.schedule-main {
+  display: flex;
+  gap: 40px;
+}
+
+/* Left side schedule */
+.schedule-list {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Each schedule item (hover effect on full block) */
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.schedule-item:hover {
+  background: #e0f7fa;
+  transform: scale(1.02);
+}
+
+.time {
+  width: 120px;
+  font-weight: bold;
+  color: #145e67;
+}
+
+.patient {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.patient img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Right side patient details */
+.patient-details {
+  flex: 1;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.patient-details img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.patient-details h2 {
+  margin: 10px 0;
+  color: #145e67;
+}
