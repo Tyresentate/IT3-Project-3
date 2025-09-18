@@ -30,62 +30,27 @@
   <main class="schedule-container">
     <h1>View Schedule</h1>
 
+    <!-- Calendar Controls -->
+    <div class="calendar-controls">
+      <button id="toggleViewBtn">Switch to Monthly View</button>
+      <div id="monthNav" class="month-nav" style="display: none;">
+        <button id="prevMonth">&lt;</button>
+        <span id="monthLabel"></span>
+        <button id="nextMonth">&gt;</button>
+      </div>
+    </div>
+
     <!-- CALENDAR BAR -->
-    <section class="calendar-bar">
-      <div class="day">S<br>20</div>
-      <div class="day">M<br>21</div>
-      <div class="day">T<br>22</div>
-      <div class="day">W<br>23</div>
-      <div class="day active">T<br>24</div>
-      <div class="day">F<br>25</div>
-      <div class="day">S<br>26</div>
-    </section>
+    <section class="calendar-bar"></section>
 
     <!-- SCHEDULE SECTION -->
     <section class="schedule-main">
       <!-- Left side: Times and appointments -->
-      <div class="schedule-list">
-        <div class="schedule-item">
-          <div class="time">10:35 - 11:15</div>
-          <div class="patient">
-            <img src="images/Generic avatar.png" alt="Patient" />
-            <div class="details">
-              <p><strong>John Doe</strong></p>
-              <p>Follow-up Consultation</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="schedule-item">
-          <div class="time">12:00 - 12:35</div>
-          <div class="patient">
-            <img src="images/Generic avatar.png" alt="Patient" />
-            <div class="details">
-              <p><strong>Jane Smith</strong></p>
-              <p>General Check-up</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="schedule-item">
-          <div class="time">1:00 - 1:30</div>
-          <div class="patient">
-            <img src="images/Generic avatar.png" alt="Patient" />
-            <div class="details">
-              <p><strong>Mark Johnson</strong></p>
-              <p>Lab Results Review</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="schedule-list"></div>
 
       <!-- Right side: Selected patient details -->
       <aside class="patient-details">
-        <img src="images/Generic avatar.png" alt="Patient" />
-        <h2>John Doe</h2>
-        <p>Age: 34</p>
-        <p>Condition: Hypertension</p>
-        <p>Notes: Needs blood pressure follow-up and medication adjustment.</p>
+        <p>Select a patient to view details.</p>
       </aside>
     </section>
   </main>

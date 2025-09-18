@@ -56,6 +56,37 @@ body {
   margin-bottom: 20px;
 }
 
+/* Calendar Controls */
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.month-nav button {
+  background: #145e67;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.month-nav button:hover {
+  background: #0d3f45;
+}
+
+.month-nav span {
+  font-weight: bold;
+}
+
 /* Calendar Bar */
 .calendar-bar {
   display: flex;
@@ -73,17 +104,30 @@ body {
   font-weight: bold;
   cursor: pointer;
   border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
+  transition: box-shadow 0.3s, transform 0.2s, border 0.3s;
+  border: 2px solid transparent;
 }
 
 .day:hover {
-  background: #e0f7fa;
+  border: 2px solid #145e67;
+  box-shadow: 0 0 8px rgba(20, 94, 103, 0.4);
   transform: scale(1.05);
 }
 
 .day.active {
   background: #145e67;
   color: #fff;
+}
+
+/* Monthly view layout */
+.calendar-bar.monthly {
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.calendar-bar.monthly .day {
+  flex: 0 0 calc(14.28% - 5px); /* 7 days per row */
+  padding: 10px 0;
 }
 
 /* Schedule Layout */
@@ -100,7 +144,6 @@ body {
   gap: 20px;
 }
 
-/* Each schedule item (hover effect on full block) */
 .schedule-item {
   display: flex;
   align-items: center;
@@ -109,12 +152,17 @@ body {
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .schedule-item:hover {
   background: #e0f7fa;
   transform: scale(1.02);
+}
+
+.schedule-item.active {
+  background: #d0f0f5;
+  border: 2px solid #145e67;
 }
 
 .time {
@@ -155,3 +203,25 @@ body {
   margin: 10px 0;
   color: #145e67;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .schedule-main {
+    flex-direction: column;
+  }
+  .calendar-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* Glowing dot for days with appointments */
+.appointment-dot {
+  width: 8px;
+  height: 8px;
+  background: #145e67;
+  border-radius: 50%;
+  margin: 4px auto 0 auto;
+  box-shadow: 0 0 6px #145e67;
+}
+
