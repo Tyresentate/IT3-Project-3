@@ -1,0 +1,137 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.logo img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #145e67;
+}
+
+.nav-links .active {
+  border-bottom: 2px solid #145e67;
+}
+
+.login-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.login-icon a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+/* FAQ Layout */
+.faq-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 50px 20px;
+}
+
+.faq-section h1 {
+  color: #145e67;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #4a7a82;
+  margin-bottom: 30px;
+}
+
+/* FAQ Items */
+.faq-item {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.faq-question {
+  background-color: #f9f9f9;
+  color: #145e67;
+  cursor: pointer;
+  padding: 15px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question:hover {
+  background-color: #e0f0f2;
+}
+
+/* Arrow */
+.faq-question::after {
+  content: "▼";
+  transition: transform 0.3s;
+}
+
+.faq-question.active::after {
+  transform: rotate(-180deg);
+}
+
+/* FAQ Answer */
+.faq-answer {
+  font-size: 15px;
+  color: #333;
+  max-height: 0;
+  padding: 0 15px;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.5s ease;
+}
+
+.faq-answer.open {
+  padding: 15px;
+  max-height: 500px; /* big enough to show content */
+}
