@@ -1,0 +1,82 @@
+/* Base */
+:root {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --border: #cfe6ef;
+  --text: #1f2a37;
+  --muted: #9aa6b2;
+  --input-bg: #ededed;
+  --primary: #1e8891;
+  --primary-pressed: #156e75;
+  --ring: rgba(30, 136, 145, 0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.page-frame {
+  min-height: 100vh;
+  border: none;
+  padding: 28px 28px 40px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+/* Navbar (match site) */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+.logo img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; }
+.nav-links { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: #000; font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover { color: #145e67; }
+.login-icon { display: flex; align-items: center; gap: 10px; }
+.login-icon img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.login-icon a { text-decoration: none; color: #000; font-weight: 500; }
+
+.card {
+  width: min(520px, 92vw);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 28px 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 13px; margin: 6px 2px 6px; color: #475569; }
+.field input[type="email"],
+.field input[type="password"]{
+  width: 100%; height: 38px; border-radius: 999px; border: none; outline: none; background: var(--input-bg);
+  padding: 0 14px; font-size: 14px; color: var(--text);
+}
+.field input:focus { box-shadow: 0 0 0 4px var(--ring); background: #f3f6f7; }
+
+.helper-row { margin: 4px 4px 10px; }
+.muted { color: #6b7280; text-decoration: none; font-size: 12px; }
+
+.error { margin: 4px 8px 0; min-height: 16px; color: #c0392b; font-size: 12px; }
+
+.btn-primary {
+  margin: 8px auto 6px; display: block; width: 220px; height: 40px; border: none; border-radius: 999px;
+  background: var(--primary); color: #fff; font-weight: 600; letter-spacing: 0.2px; cursor: pointer;
+  transition: background 0.2s ease, transform 0.02s ease;
+}
+.btn-primary:hover { background: #1a7c85; }
+.btn-primary:active { background: var(--primary-pressed); transform: translateY(1px); }
+
+.subtext { text-align: center; color: #6b7280; font-size: 12px; }
+.subtext a { color: #2563eb; text-decoration: none; }
+.subtext a:hover { text-decoration: underline; }
