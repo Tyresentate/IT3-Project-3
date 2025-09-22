@@ -1,0 +1,42 @@
+/* Base */
+:root{ --teal:#145e67; --teal2:#1e8891; --muted:#6b7280; }
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial,sans-serif;color:#111;background:#fff}
+
+/* Navbar */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;border-bottom:1px solid #ddd;background:#f9f9f9}
+.logo img{width:130px;height:130px;border-radius:50%;object-fit:cover}
+.nav-links{list-style:none;display:flex;gap:30px;margin:0;padding:0}
+.nav-links a{text-decoration:none;color:#000;font-weight:500}
+.nav-links a:hover{color:var(--teal)}
+.login-icon{display:flex;align-items:center;gap:10px}
+.login-icon img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+
+/* Page */
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px;text-align:center}
+.wrap h1{color:var(--teal2);margin:14px 0 8px;font-weight:800}
+.wrap h2{color:var(--teal2);margin:0 0 16px;font-weight:700}
+
+/* Calendar */
+.calendar{display:flex;justify-content:center;margin:10px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(7, 1fr);gap:0;border:1px solid #d1d5db;width:620px}
+.cell{height:70px;display:grid;place-items:center;border-right:1px solid #d1d5db;border-bottom:1px solid #d1d5db;cursor:pointer}
+.cell:nth-child(7n){border-right:none}
+.row-last .cell{border-bottom:none}
+.cell.disabled{background:#fafafa;color:#c7c7c7;cursor:default}
+.cell.selected{background:#bfe0e4}
+
+/* Slots */
+.slots{display:flex;justify-content:center;gap:18px;margin-top:18px}
+.slot{min-width:90px;padding:10px 12px;border-radius:999px;background:#dedede;color:#555;cursor:pointer;border:none;font-weight:600}
+.slot.selected{background:#6fb7be;color:#fff}
+.slot.disabled{opacity:.5;cursor:default}
+
+/* Book button */
+.book-btn{position:fixed;right:40px;bottom:28px;background:#1e8891;color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer}
+.book-btn:hover{filter:brightness(0.95)}
+
+@media (max-width: 700px){
+  .grid{width:100%}
+  .slots{flex-wrap:wrap}
+}

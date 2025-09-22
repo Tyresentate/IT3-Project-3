@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book an Appointment</title>
+  <link rel="stylesheet" href="Booking.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="images/ClinicConnect-removebg-preview 2.png" alt="Logo" />
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="ContactUs.html">Contact Us</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="login-icon">
+      <img src="images/Generic avatar.png" alt="User Icon" />
+      <span id="welcomeText">Welcome</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Book an Appointment</h1>
+    <h2 id="monthLabel">Month YYYY</h2>
+
+    <section class="calendar">
+      <div class="grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="slots" id="slots">
+      <!-- time slot pills inserted here -->
+    </section>
+
+    <button id="bookBtn" class="book-btn">Book Now</button>
+  </main>
+
+  <script src="Booking.js"></script>
+</body>
+</html>
