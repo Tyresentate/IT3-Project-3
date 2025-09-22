@@ -2,38 +2,58 @@
   const grid = document.getElementById('appointmentsGrid');
   if(!grid) return;
 
-  const placeholder = Array.from({length: 6}).map((_,i)=>({ id:i+1 }));
-
   function render(items){
-    grid.innerHTML = items.map(()=>`
-      <article class="card">
-        <div class="avatar">
-          <img src="images/Generic avatar.png" alt="Patient"/>
-        </div>
-        <div class="lines">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line small"></div>
-        </div>
-      </article>
-    `).join('');
-  }
-
-  // Try to fetch real appointments; fall back to placeholders
-  fetch('http://localhost:5000/appointments')
-    .then(r => r.ok ? r.json() : Promise.reject())
-    .then((data) => {
-      if(!Array.isArray(data) || data.length === 0){ render(placeholder); return; }
-      grid.innerHTML = data.map((a)=>`
+    if(!items || items.length === 0){
+      grid.innerHTML = '<p style="text-align:center;color:#6b7280;grid-column:1/-1">No appointments to show.</p>';
+      return;
+    }
+    grid.innerHTML = items.map((a)=>{
+      const name = a.name || 'Unknown Patient';
+      const reason = a.reason || 'General consultation';
+      const time = a.time || '';
+      const date = a.date || '';
+      return `
         <article class="card">
           <div class="avatar"><img src="images/Generic avatar.png" alt="Patient"/></div>
-          <div class="lines">
-            <div class="line" style="width:70%"></div>
-            <div class="line" style="width:80%"></div>
-            <div class="line small"></div>
+          <div class="content">
+            <div class="title">${name}</div>
+            <div class="row">${time ? `<span class="badge">${time}</span>` : ''} ${date ? `<span class="muted">${date}</span>` : ''}</div>
+            <div class="row muted">${reason}</div>
           </div>
         </article>
-      `).join('');
-    })
-    .catch(()=> render(placeholder));
+      `;
+    }).join('');
+  }
+
+  function addFromLastBooking(list){
+    try{
+      const raw = sessionStorage.getItem('lastBooking');
+      if(!raw) return list;
+      const lb = JSON.parse(raw);
+      return [{ name:'You', reason:'New booking', time: lb.time, date: lb.date }, ...list];
+    }catch{ return list; }
+  }
+
+  async function load(){
+    // Try a few endpoints to maximize compatibility
+    const today = new Date().toISOString().split('T')[0];
+    const endpoints = [
+      `http://localhost:5000/appointments?date=${today}`,
+      `http://localhost:5000/appointments`
+    ];
+    for(const url of endpoints){
+      try{
+        const r = await fetch(url);
+        if(!r.ok) continue;
+        const data = await r.json();
+        if(Array.isArray(data)){
+          return addFromLastBooking(data);
+        }
+      }catch{}
+    }
+    // Fallback: just show last booking if present
+    return addFromLastBooking([]);
+  }
+
+  load().then(render).catch(()=>render([]));
 })();
