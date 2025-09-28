@@ -11,36 +11,47 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 50px;
-  border-bottom: 1px solid #ddd;
+  padding: 20px 40px;
+  background: #fff;
 }
 
-.logo img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-top: -10px;
+  margin-bottom: -10px;
 }
 
-.nav-links {
-  display: flex;
+.navbar ul {
   list-style: none;
+  display: flex;
   gap: 25px;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links a {
+.navbar ul li a {
   text-decoration: none;
-  color: #000;
+  color: #333;
   font-weight: 500;
 }
 
-.login-icon {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.navbar ul li a.active {
+  color: #2ca9b7;
 }
 
-.login-icon img {
+.logged-in-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logged-in-text {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.logged-in-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -48,12 +59,15 @@ body {
 
 /* Page Title */
 .schedule-container {
-  padding: 30px 50px;
+  padding: 20px 50px 30px 50px;
+  margin-top: 0;
 }
 
 .schedule-container h1 {
   color: #145e67;
   margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 600;
 }
 
 /* Calendar Controls */
@@ -63,6 +77,26 @@ body {
   align-items: center;
   margin-bottom: 15px;
 }
+
+.calendar-controls button {
+  background: #145e67; /* solid colour */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3); /* subtle shadow */
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-controls button:hover {
+  background: #0d3f45; /* slightly darker shade */
+  transform: translateY(-1px); /* subtle lift effect */
+  box-shadow: 0 4px 6px rgba(20, 94, 103, 0.3); /* subtle increase */
+}
+
 
 .month-nav {
   display: flex;
@@ -97,6 +131,7 @@ body {
   margin-bottom: 30px;
 }
 
+/* Days */
 .day {
   flex: 1;
   text-align: center;
@@ -126,7 +161,7 @@ body {
 }
 
 .calendar-bar.monthly .day {
-  flex: 0 0 calc(14.28% - 5px); /* 7 days per row */
+  flex: 0 0 calc(14.28% - 5px);
   padding: 10px 0;
 }
 
@@ -224,4 +259,3 @@ body {
   margin: 4px auto 0 auto;
   box-shadow: 0 0 6px #145e67;
 }
-
