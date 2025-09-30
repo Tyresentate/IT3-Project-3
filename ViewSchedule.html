@@ -9,19 +9,23 @@
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
-  <img src="images/logo.svg" alt="Logo" class="logo">
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="ContactUs.html">Contact Us</a></li>
-    <li><a class="active" href="ViewSchedule.html">View Schedule</a></li>
-    <li><a href="FAQ.html">FAQ</a></li>
-  </ul>
-  <div class="logged-in-container">
-    <span class="logged-in-text">Dr. Bucannon</span>
-    <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
-  </div>
-</nav>
+    <img src="images/logo.svg" alt="Logo" class="logo">
+    <ul>
+      <!--<li><a href="index.html">Home</a></li>
+      <li><a href="#aboutUS">About</a></li>
+      <li><a href="ContactUs.html">Contact Us</a></li>
+      <li><a href="FAQ.html">FAQ</a></li>-->
+      <li><a class="active" href="ViewSchedule.html">View Schedule</a></li>
+      <li><a href="PatientInfo.html">Patient Info</a></li>
+    </ul>
+    <div class="logged-in-container">
+      <span class="logged-in-text">Dr. Bucannon</span>
+      <a href="#">
+        <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+      </a>
+      <a href="#" class="logout-btn" id="logoutBtn">Logout</a>
+    </div>
+  </nav>
 
   <!-- PAGE TITLE -->
   <main class="schedule-container">
@@ -51,6 +55,44 @@
       </aside>
     </section>
   </main>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="logoutModal" class="logout-modal">
+    <div class="logout-modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="logout-modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes</button>
+        <button id="cancelLogout" class="cancel-btn">No</button>
+      </div>
+    </div>
+  </div>
+
   <script src="ViewSchedule.js"></script>
+  <script>
+    // Logout Modal Script
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutModal = document.getElementById("logoutModal");
+    const confirmLogout = document.getElementById("confirmLogout");
+    const cancelLogout = document.getElementById("cancelLogout");
+
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutModal.style.display = "flex";
+    });
+
+    cancelLogout.addEventListener("click", () => {
+      logoutModal.style.display = "none";
+    });
+
+    confirmLogout.addEventListener("click", () => {
+      window.location.href = "index.html"; // Redirect to home/login
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === logoutModal) {
+        logoutModal.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
