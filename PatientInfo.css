@@ -1,0 +1,217 @@
+.logged-in-container {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.logged-in-text {
+	font-weight: 500;
+	font-size: 14px;
+}
+.logged-in-avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+.logout-btn {
+	background: #e63946;
+	color: #fff;
+	padding: 6px 12px;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	margin-left: 10px;
+	transition: background 0.2s ease;
+}
+.logout-btn:hover {
+	background: #c71f2d;
+}
+/* Override logo and navbar for consistency with index.html */
+.navbar {
+	padding: 20px 40px !important;
+	background: #fff !important;
+}
+.logo {
+	width: 100px !important;
+	height: 100px !important;
+	margin-top: -10px !important;
+	margin-bottom: -10px !important;
+}
+.logo img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+.navbar ul {
+	list-style: none;
+	display: flex;
+	gap: 25px;
+	margin: 0;
+	padding: 0;
+}
+.navbar ul li a {
+	text-decoration: none;
+	color: #333;
+	font-weight: 500;
+}
+.navbar ul li a.active {
+	color: #2ca9b7;
+}
+/* Renamed from Patient-Profile.css */
+/* ...existing code from Patient-Profile.css will be placed here... */
+/* General */
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	background-color: #f5f9fa;
+	color: #333;
+}
+
+/* Navbar */
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 32px;
+	border-bottom: 1px solid #ddd;
+	background: linear-gradient(90deg, #e6f7f9, #f9f9f9);
+}
+
+.logo img {
+	width: 60px;
+	height: 60px;
+	object-fit: contain;
+}
+
+.nav-links {
+	list-style: none;
+	display: flex;
+	gap: 25px;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-links a {
+	text-decoration: none;
+	color: #000;
+	font-weight: 500;
+	transition: color 0.3s, border-bottom 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+	color: #145e67;
+	border-bottom: 2px solid #145e67;
+}
+
+.login-icon {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.login-icon img {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+
+/* Page Title */
+.profile-title {
+	text-align: center;
+	margin: 20px 0;
+	color: #145e67;
+	font-size: 26px;
+}
+
+/* Layout */
+.profile-sections {
+	display: flex;
+	gap: 20px;
+	padding: 20px 40px;
+}
+
+/* Left & Right Panels */
+.left-panel {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.right-panel {
+	flex: 2;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* Cards */
+.card, .profile-card {
+	border-radius: 10px;
+	padding: 15px;
+	background: #fff;
+	box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover, .profile-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.profile-pic {
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	margin-bottom: 10px;
+	border: 3px solid #145e67;
+}
+
+/* Toggle Section */
+.toggle-header {
+	cursor: pointer;
+	color: #145e67;
+	margin: 0;
+	font-weight: bold;
+}
+
+.toggle-content {
+	display: none;
+	margin-top: 10px;
+}
+
+/* Table */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+table th, table td {
+	border: 1px solid #999;
+	padding: 10px;
+	font-size: 14px;
+	text-align: left;
+}
+
+table th {
+	background-color: #145e67;
+	color: #fff;
+}
+
+table tr:hover {
+	background-color: #e6f7f9;
+	cursor: pointer;
+}
+
+tr.active-row {
+	background-color: #c8f7f0 !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+	.profile-sections {
+		flex-direction: column;
+		padding: 20px;
+	}
+}
