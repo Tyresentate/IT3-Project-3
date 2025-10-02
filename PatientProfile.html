@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Profile</title>
+  <link rel="stylesheet" href="PatientProfile.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <img src="images/logo.svg" alt="Logo" class="logo">
+    <ul>
+      <li><a href="Booking.html">Book Appointment</a></li>
+      <li><a href="PatientProfile.html" class="active">Profile</a></li>
+    </ul>
+    <div class="logged-in-container">
+      <span class="logged-in-text">Welcome User</span>
+      <a href="PatientProfile.html">
+        <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+      </a>
+      <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="profile-container">
+    <h1>My Profile</h1>
+
+    <!-- Profile Header -->
+    <section class="profile-header">
+      <img src="images/Generic avatar.png" alt="Profile Picture" class="profile-avatar">
+      <div class="profile-info">
+        <h2>John Doe</h2>
+        <p>Email: johndoe@example.com</p>
+        <p>Phone: +27 71 234 5678</p>
+      </div>
+    </section>
+
+    <!-- Editable Details -->
+<section class="profile-details">
+  <h3>Personal Information</h3>
+  <form class="profile-form">
+    <label>
+      First Name
+      <input type="text" value="John" />
+    </label>
+    <label>
+      Last Name
+      <input type="text" value="Doe" />
+    </label>
+    <label>
+      Email
+      <input type="email" value="johndoe@example.com" />
+    </label>
+    <label>
+      Phone
+      <input type="tel" value="+27 71 234 5678" />
+    </label>
+    <label>
+      Date of Birth
+      <input type="date" value="1995-05-10" />
+    </label>
+
+    <!-- Medical Aid Section -->
+    <h3>Medical Aid Information</h3>
+    <label>
+      Medical Aid Provider
+      <input type="text" placeholder="e.g. Discovery Health" />
+    </label>
+    <label>
+      Plan/Option
+      <input type="text" placeholder="e.g. Classic Saver" />
+    </label>
+    <label>
+      Membership Number
+      <input type="text" placeholder="e.g. 123456789" />
+    </label>
+
+    <button type="submit" class="save-btn">Save Changes</button>
+  </form>
+</section>
+
+
+    <!-- Appointment History -->
+    <section class="profile-history">
+      <h3>Appointment History</h3>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Doctor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12 Sept 2025</td>
+            <td>09:00</td>
+            <td>Dr. Bucannon</td>
+            <td>Completed</td>
+          </tr>
+          <tr>
+            <td>28 Sept 2025</td>
+            <td>14:30</td>
+            <td>Dr. Bucannon</td>
+            <td>Upcoming</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- LOGOUT MODAL -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes, Logout</button>
+        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutModal = document.getElementById("logoutModal");
+    const confirmLogout = document.getElementById("confirmLogout");
+    const cancelLogout = document.getElementById("cancelLogout");
+
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutModal.style.display = "flex";
+    });
+
+    cancelLogout.addEventListener("click", () => {
+      logoutModal.style.display = "none";
+    });
+
+    confirmLogout.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === logoutModal) {
+        logoutModal.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
