@@ -77,14 +77,14 @@ body {
   margin-bottom: 20px;
   font-size: 28px;
   font-weight: 600;
-  text-align: center; /* ✅ Center "My Profile" heading only */
+  text-align: left; /* aligned left */
 }
 
 /* Profile Header */
 .profile-header {
   display: flex;
   align-items: center;
-  justify-content: center; /* ✅ Center avatar + name under "My Profile" */
+  justify-content: flex-start; /* aligned left */
   gap: 20px;
   margin-bottom: 30px;
 }
@@ -110,7 +110,7 @@ body {
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* ✅ Keep personal info left-aligned */
+  align-items: flex-start;
 }
 
 .profile-details h3 {
@@ -183,7 +183,7 @@ body {
   background: #fafafa;
 }
 
-/* Modal (same as Booking page) */
+/* Modal */
 .modal {
   display: none;
   position: fixed;
