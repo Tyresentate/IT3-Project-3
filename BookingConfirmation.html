@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Booking Confirmation</title>
     <link rel="stylesheet" href="BookingConfirmation.css" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Confirmation</title>
-
-  </head>
+</head>
 <body>
-
-  <div class="container">
-    <nav>
-
-        
-      <a href="#">Home</a>
-      <a href="index.html" class="active">About</a>
-      <a href="ContactUs.html">Contact Us</a>
-      <a href="FAQ.html">FAQ</a>
-      <span style="float:right;">Welcome, XYZ</span>
-      
-      
-    </nav>
-
-    <img class="checkmark" src="images/Blue-correct-icon-design-on-transparent-background-PNG.png" alt="Checkmark">
-
-    <h2>Booking confirmed</h2>
-    <p>Thank you for confirming your booking.<br>You are safe to close this window.</p>
+    <!-- Navbar -->
+    
+<nav class="navbar">
+  <img src="images/ClinicConnect-removebg-preview 2.png" alt="Logo" class="logo">
+  <ul class="nav-links">
+   <!---- <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#aboutUS">About</a></li>-->
+    <li><a href="Booking.html">Book Appointments</a></li>
+    <li><a href="Patient-Profile.html">Profile</a></li>
+   <!---- <li><a href="FAQ.html">FAQ</a></li>-->
+  </ul>
+  <div class="logged-in-container">
+    <span class="logged-in-text">Welcome user</span>
+    <a href="#">
+      <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+    </a>
+    <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
   </div>
+</nav>
 
-  <script>
-    // Get saved booking details
-    const date = sessionStorage.getItem("bookingDate");
-    const time = sessionStorage.getItem("bookingTime");
+    <!-- Full Page Confirmation Content -->
+    <main class="confirmation-container">
+        <div class="confirmation-box">
+            <img class="checkmark" src="images/Blue-correct-icon-design-on-transparent-background-PNG.png" alt="Checkmark">
+            <h2>Booking confirmed</h2>
+            <p id="confirmationMsg">
+                Thank you for confirming your booking.<br>
+                You are safe to close this window.
+            </p>
+        </div>
+    </main>
 
-    if (date && time) {
-      document.getElementById("confirmationMsg").innerText =
-        `Thank you for confirming your booking.\nDate: ${date}, Time: ${time}\nYou are safe to close this window.`;
-    } else {
-      document.getElementById("confirmationMsg").innerText =
-        "No booking information found.";
-    }
-  </script>
+    <script>
+        // Get saved booking details
+        const date = sessionStorage.getItem("bookingDate");
+        const time = sessionStorage.getItem("bookingTime");
 
+        const confirmationMsg = document.getElementById("confirmationMsg");
+
+    
+    </script>
 </body>
 </html>
