@@ -28,7 +28,7 @@
 
 	<!-- Main Content -->
 	<main class="profile-container">
-		<h2 class="profile-title">Patient: XYZ</h2>
+		<h2 class="profile-title">Patient: <span id="patientName"></span></h2>
 
 		<section class="profile-sections">
 			<!-- Left Sidebar -->
@@ -36,20 +36,18 @@
 				<div class="profile-card">
 					<img src="images/Generic avatar.png" alt="Profile" class="profile-pic" />
 					<h3>Profile Overview</h3>
-					<p><b>Gender:</b> Male</p>
-					<p><b>Age:</b> 24</p>
-					<p><b>Language:</b> English</p>
-					<p><b>Height:</b> 178cm</p>
-					<p><b>Weight:</b> 95kg</p>
-					<p><b>Ethnicity:</b> Black</p>
+					<p><b>Gender:</b> <span id="patientGender"></span></p>
+					<p><b>Age:</b> <span id="patientAge"></span></p>
+					<p><b>Language:</b> <span id="patientLanguage"></span></p>
+					<p><b>Height:</b> <span id="patientHeight"></span></p>
+					<p><b>Weight:</b> <span id="patientWeight"></span></p>
+					<p><b>Ethnicity:</b> <span id="patientEthnicity"></span></p>
 				</div>
 
 				<div class="card toggle-section">
 					<h3 class="toggle-header">Allergies ⯆</h3>
 					<div class="toggle-content">
-						<ul>
-							<li>Penicillin</li>
-							<li>I Add Allergy</li>
+						<ul id="allergyList">
 						</ul>
 					</div>
 				</div>
@@ -67,18 +65,18 @@
 				<!-- Personal Details -->
 				<div class="card">
 					<h3>Personal Details</h3>
-					<p><b>Name:</b> XYZ Mathebane</p>
-					<p><b>Address:</b> 123 ClinicConnect, Cape Town</p>
-					<p><b>Phone:</b> +27 81 000 0000</p>
-					<p><b>Email:</b> xyz@gmail.com</p>
+					<p><b>Name:</b> <span id="patientFullName"></span></p>
+					<p><b>Address:</b> <span id="patientAddress"></span></p>
+					<p><b>Phone:</b> <span id="patientPhone"></span></p>
+					<p><b>Email:</b> <span id="patientEmail"></span></p>
 				</div>
 
 				<!-- Prescription -->
 				<div class="card">
 					<h3>Prescription</h3>
-					<p><b>Delivery Type:</b> Pickup / Delivery</p>
-					<p><b>Drug Line 1:</b> Brand / Generic</p>
-					<p><b>Drug Line 2:</b> Brand / Generic</p>
+					<p><b>Delivery Type:</b> <span id="deliveryType"></span></p>
+					<p><b>Drug Line 1:</b> <span id="drugLine1"></span></p>
+					<p><b>Drug Line 2:</b> <span id="drugLine2"></span></p>
 				</div>
 
 				<!-- Used Drug -->
@@ -97,28 +95,28 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>Apo-Clarith</td>
-								<td>Apo-Clarith</td>
-								<td>500mg</td>
-								<td>100 Tabs</td>
-								<td>Tablet</td>
-								<td>Apoat Industries</td>
+								<td id="drugBrand1"></td>
+								<td id="drugGeneric1"></td>
+								<td id="drugDosage1"></td>
+								<td id="drugPack1"></td>
+								<td id="drugForm1"></td>
+								<td id="drugManufacturer1"></td>
 							</tr>
 							<tr>
-								<td>Abac Linospirate</td>
-								<td>Broncolizine</td>
-								<td>300mg</td>
-								<td>65 Medical Syrup</td>
-								<td>Syrup</td>
-								<td>Pharma Dynamics</td>
+								<td id="drugBrand2"></td>
+								<td id="drugGeneric2"></td>
+								<td id="drugDosage2"></td>
+								<td id="drugPack2"></td>
+								<td id="drugForm2"></td>
+								<td id="drugManufacturer2"></td>
 							</tr>
 							<tr>
-								<td>Tusanner</td>
-								<td>Levorestizine</td>
-								<td>5mg</td>
-								<td>60 Pills</td>
-								<td>Tablet</td>
-								<td>Adcock Ingram</td>
+								<td id="drugBrand3"></td>
+								<td id="drugGeneric3"></td>
+								<td id="drugDosage3"></td>
+								<td id="drugPack3"></td>
+								<td id="drugForm3"></td>
+								<td id="drugManufacturer3"></td>
 							</tr>
 						</tbody>
 					</table>
