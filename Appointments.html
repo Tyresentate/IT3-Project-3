@@ -2,37 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Appointments</title>
   <link rel="stylesheet" href="Appointments.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">
-      <img src="images/ClinicConnect-removebg-preview 2.png" alt="Logo" />
-    </div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="ContactUs.html">Contact Us</a></li>
-        <li><a href="FAQ.html">FAQ</a></li>
-      </ul>
-    </nav>
-    <div class="login-icon">
-      <span>Dr. ABC</span>
-      <img src="images/Generic avatar.png" alt="User Icon" />
-    </div>
-  </header>
+  <!-- Navbar (like Booking Confirmation) -->
+  <nav class="navbar">
+  <img src="images/ClinicConnect-removebg-preview 2.png" alt="Logo" class="logo">
+  <ul class="nav-links">
+    
+    <li><a href="ViewSchedule.html">View Schedule</a></li>
+    <li><a href="PatientInfo.html">Patient Info</a></li>
+    
+    
+  </ul>
+  <div class="logged-in-container">
+    <span class="logged-in-text">Dr. Buchanan</span>
+    <a href="#">
+      <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+    </a>
+    <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
+  </div>
+</nav>
 
-  <main class="wrap">
+  <!-- Appointments Section -->
+  <main class="appointments-container">
     <h1>Appointments</h1>
-    <section id="appointmentsGrid" class="grid"></section>
+    <div class="appointments-grid">
+      <!-- Example Appointment Card -->
+      <div class="appointment-card">
+        <div class="avatar"></div>
+        <div class="details">
+          <h3>Patient: John Doe</h3>
+          <p>Date: 2025-10-10</p>
+          <p>Time: 09:30 AM</p>
+          <p>Status: Confirmed</p>
+        </div>
+      </div>
+
+      <div class="appointment-card">
+        <div class="avatar"></div>
+        <div class="details">
+          <h3>Patient: Jane Smith</h3>
+          <p>Date: 2025-10-11</p>
+          <p>Time: 11:00 AM</p>
+          <p>Status: Pending</p>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <script src="Appointments.js"></script>
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes, Logout</button>
+        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Logout Modal Logic
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutModal = document.getElementById("logoutModal");
+    const confirmLogout = document.getElementById("confirmLogout");
+    const cancelLogout = document.getElementById("cancelLogout");
+
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutModal.style.display = "flex";
+    });
+
+    cancelLogout.addEventListener("click", () => {
+      logoutModal.style.display = "none";
+    });
+
+    confirmLogout.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === logoutModal) {
+        logoutModal.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>

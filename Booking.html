@@ -9,51 +9,250 @@
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
-  <img src="images/logo.svg" alt="Logo" class="logo">
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="Booking.html" class="active">Book Appointment</a></li> <!-- NEW LINK -->
-    <li><a href="ContactUs.html">Contact Us</a></li>
-    <li><a href="FAQ.html">FAQ</a></li>
-  </ul>
-  <div class="logged-in-container">
-    <span class="logged-in-text">Welcome User</span>
-    <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
-  </div>
-</nav>
-
-
+    <img src="images/logo.svg" alt="Logo" class="logo">
+    <ul>
+      <li><a href="Booking.html" class="active">Book Appointment</a></li>
+      <li><a href="PatientProfile.html">Profile</a></li>
+    </ul>
+    <div class="logged-in-container">
+      <span class="logged-in-text">Welcome User</span>
+      <a href="PatientProfile.html">
+        <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+      </a>
+      <!-- Logout now opens modal -->
+      <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
+    </div>
+  </nav>
 
   <!-- PAGE CONTENT -->
   <main class="booking-container">
     <h1>Book an Appointment</h1>
     <h3 class="subheading">Select a date to view available time slots</h3>
-    <h2 id="monthLabel">Month YYYY</h2>
+
+    <!-- Month navigation -->
+    <div class="month-nav">
+      <button id="prevMonth" aria-label="Previous month">&lt;</button>
+      <h2 id="monthLabel">Month YYYY</h2>
+      <button id="nextMonth" aria-label="Next month">&gt;</button>
+    </div>
 
     <!-- Calendar -->
     <section class="calendar">
       <div class="day-labels">
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-        <div>Sun</div>
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
       </div>
-      <div class="grid" id="calendarGrid"></div>
+      <div class="grid" id="calendarGrid" role="grid" aria-label="Calendar"></div>
     </section>
 
     <!-- Slots -->
-    <section class="slots" id="slots">
-      <!-- time slot pills inserted dynamically -->
+    <section class="slots" id="slots" aria-live="polite">
+      <div class="slot-grid" id="slotGrid"></div>
+      <p id="noSlotsMsg" style="display:none; color:#888; text-align:center; margin-top:12px;">
+        No slots available for this day.
+      </p>
     </section>
 
     <!-- Book Button -->
     <button id="bookBtn" class="book-btn">Book Now</button>
   </main>
 
-  <script src="Booking.js"></script>
+  <!-- LOGOUT CONFIRM MODAL -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes, Logout</button>
+        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOK CONFIRM MODAL -->
+  <div id="bookModal" class="modal">
+    <div class="modal-content">
+      <p id="bookMessage">Do you want to confirm this booking?</p>
+      <div class="modal-actions">
+        <button id="confirmBook" class="confirm-btn">Yes, Book</button>
+        <button id="cancelBook" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+  // Logout Modal Logic
+  const logoutBtn = document.getElementById("logoutBtn");
+  const logoutModal = document.getElementById("logoutModal");
+  const confirmLogout = document.getElementById("confirmLogout");
+  const cancelLogout = document.getElementById("cancelLogout");
+
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    logoutModal.style.display = "flex";
+  });
+
+  cancelLogout.addEventListener("click", () => {
+    logoutModal.style.display = "none";
+  });
+
+  confirmLogout.addEventListener("click", () => {
+    window.location.href = "index.html"; // Redirect to login/home
+  });
+
+  // Close modal if user clicks outside
+  window.addEventListener("click", (e) => {
+    if (e.target === logoutModal) {
+      logoutModal.style.display = "none";
+    }
+  });
+
+  // Booking Modal Logic
+  const bookBtn = document.getElementById("bookBtn");
+  const bookModal = document.getElementById("bookModal");
+  const bookMessage = document.getElementById("bookMessage");
+  const confirmBook = document.getElementById("confirmBook");
+  const cancelBook = document.getElementById("cancelBook");
+
+  bookBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Check if a slot is selected
+    const selectedSlot = document.querySelector(".slot.selected");
+    const selectedDate = document.querySelector("#calendarGrid .cell.selected");
+
+    if (!selectedSlot || !selectedDate) {
+      alert("Please select a date and time slot before booking.");
+      return;
+    }
+
+    // Show confirmation message with date + time
+    const dateStr = selectedDate.textContent;
+    const monthYear = document.getElementById("monthLabel").textContent;
+    const timeStr = selectedSlot.textContent;
+
+    bookMessage.textContent = `Confirm booking for ${dateStr} ${monthYear} at ${timeStr}?`;
+
+    bookModal.style.display = "flex";
+  });
+
+  cancelBook.addEventListener("click", () => {
+    bookModal.style.display = "none";
+  });
+
+  confirmBook.addEventListener("click", () => {
+    alert("Your appointment has been booked successfully!");
+    bookModal.style.display = "none";
+    // Optionally redirect:
+    // window.location.href = "Patient-Profile.html";
+  });
+
+  // Close booking modal if user clicks outside
+  window.addEventListener("click", (e) => {
+    if (e.target === bookModal) {
+      bookModal.style.display = "none";
+    }
+  });
+  </script>
+
+  <!-- Existing calendar script -->
+  <script>
+  (function () {
+    const monthLabel = document.getElementById("monthLabel");
+    const prevBtn = document.getElementById("prevMonth");
+    const nextBtn = document.getElementById("nextMonth");
+    const calendarGrid = document.getElementById("calendarGrid");
+    const slotGrid = document.getElementById("slotGrid");
+    const noSlotsMsg = document.getElementById("noSlotsMsg");
+
+    let currentDate = new Date();
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    function updateCalendar() {
+      monthLabel.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+      calendarGrid.innerHTML = "";
+
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+
+      let firstDay = new Date(year, month, 1).getDay();
+      if (firstDay === 0) firstDay = 7;
+
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 1; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "cell disabled";
+        calendarGrid.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = day;
+
+        const today = new Date();
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          cell.classList.add("today");
+        }
+
+        const cellDate = new Date(year, month, day);
+        if (cellDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+          cell.classList.add("disabled");
+        }
+
+        cell.tabIndex = 0;
+        cell.addEventListener("click", () => {
+          if (cell.classList.contains("disabled")) return;
+          document.querySelectorAll("#calendarGrid .cell").forEach(c => c.classList.remove("selected"));
+          cell.classList.add("selected");
+
+          generateSlots(cellDate);
+        });
+
+        cell.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cell.click(); }
+        });
+
+        calendarGrid.appendChild(cell);
+      }
+    }
+
+    function generateSlots(date) {
+      slotGrid.innerHTML = "";
+      noSlotsMsg.style.display = "none";
+
+      const dayOfWeek = date.getDay();
+      let startHour, endHour;
+
+      if (dayOfWeek === 0) {
+        noSlotsMsg.style.display = "block";
+        return;
+      } else if (dayOfWeek === 6) {
+        startHour = 9; endHour = 13;
+      } else {
+        startHour = 8; endHour = 16;
+      }
+
+      for (let hour = startHour; hour <= endHour; hour++) {
+        for (let min of [0, 30]) {
+          if (hour === endHour && min > 0) continue;
+          const timeStr = `${String(hour).padStart(2,"0")}:${min === 0 ? "00" : "30"}`;
+          const btn = document.createElement("button");
+          btn.className = "slot";
+          btn.textContent = timeStr;
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+            btn.classList.add("selected");
+          });
+          slotGrid.appendChild(btn);
+        }
+      }
+    }
+
+    prevBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth() - 1); updateCalendar(); });
+    nextBtn.addEventListener("click", () => { currentDate.setMonth(currentDate.getMonth() + 1); updateCalendar(); });
+
+    updateCalendar();
+  })();
+  </script>
 </body>
 </html>
