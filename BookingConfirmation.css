@@ -10,22 +10,26 @@ body {
     flex-direction: column;
 }
 
-/* Navbar (Appointments style) */
+/* Navbar */
+/* Match index.html navbar styling */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 50px;
-  background-color: #fff; /* white background */
+  padding: 20px 40px;
+  background: #fff;
   border-bottom: 1px solid #ddd;
-  font-family: Arial, sans-serif;
 }
 
 .logo {
-  width: 120px;
+  width: 100px;
+  height: 100px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  object-fit: contain;
 }
 
-.nav-links {
+.navbar ul {
   list-style: none;
   display: flex;
   gap: 25px;
@@ -33,17 +37,14 @@ body {
   padding: 0;
 }
 
-.nav-links li a {
+.navbar ul li a {
   text-decoration: none;
-  color: #000;
+  color: #333;
   font-weight: 500;
-  font-size: 16px;
-  transition: color 0.3s;
 }
 
-.nav-links li a:hover,
-.nav-links li a.active {
-  color: #145e67;
+.navbar ul li a.active {
+  color: #2ca9b7;
 }
 
 .logged-in-container {
@@ -54,6 +55,7 @@ body {
 
 .logged-in-text {
   font-weight: 500;
+  font-size: 14px;
 }
 
 .logged-in-avatar {
@@ -63,20 +65,21 @@ body {
   object-fit: cover;
 }
 
-/* Red logout button */
 .logout-btn {
-  text-decoration: none;
+  background: #e63946;
   color: #fff;
-  background-color: #e74c3c; /* red */
   padding: 6px 12px;
   border-radius: 6px;
-  font-weight: 500;
-  transition: background-color 0.3s;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 10px;
+  transition: background 0.2s ease;
 }
 
 .logout-btn:hover {
-  background-color: #c0392b; /* darker red on hover */
+  background: #c71f2d;
 }
+
 
 
 /* Confirmation Page Layout */
