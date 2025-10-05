@@ -1,3 +1,21 @@
+
+/* Make Login/Register button look identical to Home page */
+.login-btn {
+  background-color: #2ca9b7;
+  color: #fff !important;
+  padding: 10px 18px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  border: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #1d7c87;
+}
+
 /* General Page Styling */
 body {
   font-family: Arial, sans-serif;
@@ -14,14 +32,15 @@ body {
   align-items: center;
   padding: 20px 50px;
   border-bottom: 1px solid #ddd;
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 
-.logo img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+
 }
 
 .nav-links {
@@ -44,7 +63,8 @@ body {
 }
 
 .nav-links .active {
-  border-bottom: 2px solid #145e67;
+  color: #2ca9b7 !important;
+  border-bottom: none;
 }
 
 .login-icon {
@@ -60,11 +80,7 @@ body {
   object-fit: cover;
 }
 
-.login-icon a {
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-}
+
 
 /* FAQ Layout */
 .faq-container {
