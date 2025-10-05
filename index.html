@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clinic Connect - Home</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+</head>
+
 <body>
   <!-- Navbar -->
   <nav class="navbar">
@@ -32,19 +35,19 @@
 
 
 
-      <p class="steps"> 
-        <span>Register</span> <span class="arrow">→</span>
-        <span>Book</span> <span class="arrow">→</span>
+  <button class="btn" onclick="window.location.href='Register.html'">Register</button>
+      <p class="steps"> <span>Register</span>
+        <span class="arrow">→</span>
+        <span>Book</span>
+        <span class="arrow">→</span>
         <span>Get Care</span>
-      </p>
     </div>
     <div class="hero-img">
       <img src="images/doctor1.webp" alt="doctor">
     </div>
   </section>
-
-  <!-- About Section -->
   <section id="aboutUS" class="about">
+
     <div class="about-img">
       <div class="circle-gradient">
         <img src="images/doctor1.webp" class="doctor active" alt="doctor 1">
@@ -52,6 +55,7 @@
         <img src="images/doctor3.png" class="doctor" alt="doctor 3">
       </div>
     </div>
+
 
     <div class="about-text">
       <h2>Your Health, Our Priority</h2>
@@ -72,21 +76,25 @@
     </div>
   </section>
 
-  <!-- Footer -->
+
   <footer>
     <div class="footer-container">
       <div class="footer-content">
+
         <div class="footer-section">
           <div class="footer-logo">
+            <div class="footer-logo-icon"></div>
             <div class="footer-logo-text">Clinic Connect</div>
           </div>
           <p>Empowering our community with easier, faster access to healthcare—anytime, anywhere.</p>
           <div class="contact-info">
-            <p><i class="fa-solid fa-location-dot"></i> 123 Community Health Street, Cape Town</p>
-            <p><i class="fa-solid fa-phone"></i> +27 21 123 4567</p>
-            <p><i class="fa-solid fa-envelope"></i> info@clinicconnect.co.za</p>
+            <p><span class="icon"><i class="fa-solid fa-location-dot"></i></span> 123 Community Health Street, Cape Town
+            </p>
+            <p><span class="icon"><i class="fa-solid fa-phone"></i></span> +27 21 123 4567</p>
+            <p><span class="icon"><i class="fa-solid fa-envelope"></i></span> info@clinicconnect.co.za</p>
           </div>
         </div>
+
 
         <div class="footer-section">
           <h3>Quick Links</h3>
@@ -97,6 +105,7 @@
             <li><a href="FAQ.html">FAQ</a></li>
           </ul>
         </div>
+
 
         <div class="footer-section">
           <h3>Services</h3>
@@ -109,28 +118,38 @@
           </ul>
         </div>
 
+
         <div class="footer-section">
           <h3>Office Hours</h3>
           <p>Monday - Friday<br>8:00 AM - 5:00 PM</p>
           <p>Saturday<br>9:00 AM - 1:00 PM</p>
           <p>Sunday<br>Closed</p>
+
+          <div class="social-links">
+            <a href="#" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Clinic Connect. All rights reserved. | Privacy Policy | Terms of Service</p>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Clinic Connect. All rights reserved.</p>
-      </div>
-    </div>
   </footer>
 
+
   <script>
-    // Doctor image rotation
+    // JavaScript to rotate the doctors in the about section
     const doctors = document.querySelectorAll(".doctor");
     let index = 0;
     setInterval(() => {
       doctors[index].classList.remove("active");
       index = (index + 1) % doctors.length;
       doctors[index].classList.add("active");
-    }, 4000);
+    }, 4000); 
   </script>
 </body>
+
 </html>
