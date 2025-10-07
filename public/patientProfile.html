@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Profile</title>
+  <link rel="stylesheet" href="css/patientProfile.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <img src="images/logo.svg" alt="Logo" class="logo">
+    <ul>
+      <li><a href="Booking.html">Book Appointment</a></li>
+      <li><a href="PatientProfile.html" class="active">Profile</a></li>
+    </ul>
+    <div class="logged-in-container">
+      <span id="welcomeText" class="logged-in-text">Welcome</span>
+      <a href="PatientProfile.html">
+        <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+      </a>
+      <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="profile-container">
+    <h1>My Profile</h1>
+
+    <!-- Profile Header -->
+   <section class="profile-header">
+  <img src="images/Generic avatar.png" alt="Profile Picture" class="profile-avatar" id="profileAvatar">
+  <div class="profile-info">
+    <h2 id="profileName">Loading...</h2>
+    <p>Email: <span id="profileEmail">Loading...</span></p>
+    <p>Phone: <span id="profilePhone">Loading...</span></p>
+  </div>
+</section>
+
+
+    
+    <!-- Editable Details -->
+<section class="profile-details">
+  <form class="profile-form">
+    <div class="form-section">
+      <h3>Personal Information</h3>
+      <label>
+        First Name
+        <input type="text" name="firstName" value="" />
+      </label>
+      <label>
+        Last Name
+        <input type="text" name="lastName" value="" />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" value="" />
+      </label>
+      <label>
+        Phone
+        <input type="tel" name="phone" value="" />
+      </label>
+      <label>
+        Date of Birth
+        <input type="date" name="dateOfBirth" value="" />
+      </label>
+    </div>
+
+    <div class="form-section">
+      <h3>Medical Aid Information</h3>
+      <label>
+        Medical Aid Provider
+        <input type="text" name="medicalAid" value="" placeholder="e.g. Discovery Health" />
+      </label>
+      <label>
+        Plan/Option
+        <input type="text" name="planOption" value="" placeholder="e.g. Classic Saver" />
+      </label>
+      <label>
+        Membership Number
+        <input type="text" name="membershipNumber" value="" placeholder="e.g. 123456789" />
+      </label>
+    </div>
+
+    <button type="submit" class="save-btn">Save Changes</button>
+  </form>
+</section>
+
+<!-- Appointment History -->
+<section class="profile-history">
+  <h3>Appointment History</h3>
+  <div class="history-table-container">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Doctor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentHistory">
+        <tr>
+          <td colspan="4" style="text-align:center; color:#777; font-style:italic;">
+            No appointments found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+  </main>
+
+  <!-- LOGOUT MODAL -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes, Logout</button>
+        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="js/patientProfile.js"></script>
+</body>
+</html>

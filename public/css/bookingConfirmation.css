@@ -1,0 +1,151 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* subtle separation */
+}
+
+/* Logo */
+.logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* Navigation Links */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* perfectly center */
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+  color: #2ca9b7;
+}
+
+/* Logged-in User Container */
+.logged-in-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Welcome Text */
+.logged-in-text {
+  font-weight: 500;
+  font-size: 14px;      /* SAME as booking page */
+  color: #333;
+}
+
+/* Avatar Image */
+.logged-in-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Logout Button */
+.logout-btn {
+  background: #e63946;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 10px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #c71f2d;
+}
+
+
+
+/* Confirmation Page Layout */
+.confirmation-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    background: #fff; /* page stays white */
+}
+
+.confirmation-box {
+    background: #fff;
+    padding: 50px 40px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 100%;
+    border-top: 5px solid #145e67;
+    margin-top: 40px; /* moves box up a bit */
+    transform: scale(0.95);
+    opacity: 0;
+    animation: popIn 0.5s forwards ease-out;
+}
+
+@keyframes popIn {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.checkmark {
+    width: 120px;
+    margin-bottom: 25px;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+.confirmation-box h2 {
+    color: #145e67;
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.confirmation-box p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    white-space: pre-line;
+}

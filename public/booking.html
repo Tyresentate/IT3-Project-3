@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book an Appointment</title>
+  <link rel="stylesheet" href="css/booking.css" />
+</head>
+<body>
+ 
+  <nav class="navbar">
+    <img src="images/logo.svg" alt="Logo" class="logo">
+    <ul>
+      <li><a href="Booking.html" class="active">Book Appointment</a></li>
+      <li><a href="PatientProfile.html">Profile</a></li>
+    </ul>
+    <div class="logged-in-container">
+      <span id="welcomeText" class="logged-in-text">Welcome</span>
+      <a href="PatientProfile.html">
+        <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+      </a>
+      <a href="#" id="logoutBtn" class="logout-btn">Logout</a>
+    </div>
+  </nav>
+
+
+  <main class="booking-container">
+    <h1>Book an Appointment</h1>
+    <h3 class="subheading">Select a date to view available time slots</h3>
+
+    <div class="month-nav">
+      <button id="prevMonth" aria-label="Previous month">&lt;</button>
+      <h2 id="monthLabel">Month YYYY</h2>
+      <button id="nextMonth" aria-label="Next month">&gt;</button>
+    </div>
+
+    
+    <section class="calendar">
+      <div class="day-labels">
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+      </div>
+      <div class="grid" id="calendarGrid" role="grid" aria-label="Calendar"></div>
+    </section>
+
+
+    <section class="slots" id="slots" aria-live="polite">
+      <div class="slot-grid" id="slotGrid"></div>
+      <p id="noSlotsMsg" style="display:none; color:#888; text-align:center; margin-top:12px;">
+        No slots available for this day.
+      </p>
+    </section>
+
+   
+    <button id="bookBtn" class="book-btn">Book Now</button>
+  </main>
+
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirmLogout" class="confirm-btn">Yes, Logout</button>
+        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div id="bookModal" class="modal">
+    <div class="modal-content">
+      <p id="bookMessage">Do you want to confirm this booking?</p>
+      <div class="modal-actions">
+        <button id="confirmBook" class="confirm-btn">Yes, Book</button>
+        <button id="cancelBook" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="js/booking.js"></script>
+</body>
+</html>

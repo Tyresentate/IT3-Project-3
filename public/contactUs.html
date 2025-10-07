@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="css/contactUs.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+  <img src="images/logo.svg" alt="logo" class="logo" />
+    </div>
+    <nav>
+      <ul class="nav-links">
+
+      
+
+
+
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#aboutUS">About Us</a></li>
+        <li><a class="active" href="ContactUs.html">Contact Us</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </nav>
+    <div class="login-icon">
+      <a href="Register.html" class="login-btn">Login/Register</a>
+    </div>
+  </header>
+
+  <main class="contact-container">
+    <section class="contact-form">
+      <h1>Contact Us</h1>
+      <p class="subtitle">We’re here to help—reach out anytime</p>
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="firstName" type="text" required />
+        </div>
+        <div class="field">
+          <label for="lastName">Last name</label>
+          <input id="lastName" name="lastName" type="text" required />
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div class="field message-wrap">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="8" required></textarea>
+          <button type="submit" class="btn-send">Send</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="contact-info">
+      <p><strong>Address</strong><br />
+      123 Community Health Street, Cape Town<br />
+      Mon–Fri: 8AM–5PM | Sat: 9AM–1PM</p>
+
+      <p><strong>Contact Number</strong><br />
+      +27 21 555 1234</p>
+
+      <p><strong>Email Address</strong><br />
+      support@clinicconnect.co.za</p>
+
+      <p><strong>Operating Hours</strong><br />
+      Mon–Fri: 8:00 AM – 5:00 PM<br />
+      Sat: 9:00 AM – 1:00 PM<br />
+      Closed on Sundays & Public Holidays</p>
+    </aside>
+  </main>
+  <script>
+    // simple non-intrusive handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contactForm');
+      if(!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thanks! Your message has been sent.');
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
