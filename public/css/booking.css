@@ -233,7 +233,7 @@ body {
 }
 
 .confirm-btn {
-  background: #e63946;
+  background: #30d47f;
   color: #fff;
   padding: 8px 14px;
   border: none;
@@ -241,7 +241,7 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
-.confirm-btn:hover { background: #c71f2d; }
+.confirm-btn:hover { background: #30d47f; }
 
 .cancel-btn {
   background: #dedede;
