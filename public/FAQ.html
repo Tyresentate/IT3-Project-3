@@ -16,7 +16,7 @@
 	    
 
         <li><a href="index.html">Home</a></li>
-        <li><a href="#aboutUS">About Us</a></li>
+        <li><a href="index.html#aboutUS">About Us</a></li>
         <li><a href="ContactUs.html">Contact Us</a></li>
 	
         <li><a class="active" href="FAQ.html">FAQ</a></li>
@@ -77,6 +77,81 @@
 
      </section>
   </main>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-content">
+        
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="footer-logo-icon"></div>
+            <div class="footer-logo-text">Clinic Connect</div>
+          </div>
+          <p>Your trusted partner in community healthcare, connecting you with quality medical services.</p>
+          <div class="footer-contact-info">
+            <p><span class="icon">📍</span> 123 Community Health Street, Cape Town</p>
+            <p><span class="icon">📞</span> +27 21 555 1234</p>
+            <p><span class="icon">✉️</span> support@clinicconnect.co.za</p>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#aboutUS">About Us</a></li>
+            <li><a href="ContactUs.html">Contact Us</a></li>
+            <li><a href="FAQ.html">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="#">General Practice</a></li>
+            <li><a href="#">Preventive Care</a></li>
+            <li><a href="#">Health Screenings</a></li>
+            <li><a href="#">Vaccinations</a></li>
+            <li><a href="#">Chronic Care</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Office Hours</h3>
+          <p>Monday - Friday<br>8:00 AM - 5:00 PM</p>
+          <p>Saturday<br>9:00 AM - 1:00 PM</p>
+          <p>Sunday<br>Closed</p>
+
+          <div class="social-links">
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="Twitter">𝕏</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="LinkedIn">in</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Clinic Connect. All rights reserved. | Privacy Policy | Terms of Service</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contactForm');
+      if(!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thanks! Your message has been sent.');
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
 
   <script src="js/FAQ.js"></script>
 </body>
