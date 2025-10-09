@@ -20,7 +20,7 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // set true if using HTTPS
+  cookie: { secure: false } 
 }));
 
 // Serve static files from "public"
@@ -160,7 +160,7 @@ app.post('/Register', async (req, res) => {
 // --------------------------
 app.post('/book', async (req, res) => {
   const { userId, date, time } = req.body;
-  console.log('Booking received:', { userId, date, time }); // <-- Add this line
+  console.log('Booking received:', { userId, date, time }); 
 
   if (!userId) return res.status(401).json({ message: 'Not logged in' });
 
