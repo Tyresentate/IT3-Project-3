@@ -192,26 +192,14 @@ app.post('/login', async (req, res) => {
 // --------------------------
 // Book appointment
 // --------------------------
-// Book appointment (/book) - FIXED VERSION WITH DEBUG
 app.post('/book', async (req, res) => {
   const { userId, date, time } = req.body;
-<<<<<<< HEAD
   console.log('Booking received:', { userId, date, time });
-=======
-  
-  // DEBUG: Log everything we receive
-  console.log('📅 Booking request received:');
-  console.log('  - User ID:', userId);
-  console.log('  - Date:', date);
-  console.log('  - Time:', time);
-  console.log('  - Full body:', req.body);
->>>>>>> b7b4e5c3fbe6bf1c02d52a2345e8963fa63261d6
 
   if (!userId) return res.status(401).json({ message: 'Not logged in' });
 
   try {
     const connection = await mysql.createConnection(dbConfig);
-<<<<<<< HEAD
     await connection.execute('INSERT INTO bookings (user_id, date, time) VALUES (?, ?, ?)', [userId, date, time]);
     await connection.end();
 
@@ -253,43 +241,6 @@ app.get('/bookings', async (req, res) => {
   }
 });
 
-=======
-    
-    // Insert the booking
-    const [result] = await connection.execute(
-      'INSERT INTO bookings (user_id, date, time) VALUES (?, ?, ?)',
-      [userId, date, time]
-    );
-    
-    console.log('✅ Booking inserted with ID:', result.insertId);
-    
-    // Get the newly created booking to verify what was saved
-    const [newBooking] = await connection.execute(
-      'SELECT booking_id, date, time, created_at FROM bookings WHERE booking_id = ?',
-      [result.insertId]
-    );
-    
-    console.log('📋 Retrieved booking from DB:', newBooking[0]);
-    
-    await connection.end();
-
-    // Return the booking details in the response
-    res.status(200).json({ 
-      message: 'Booking successful',
-      booking: {
-        id: newBooking[0].booking_id,
-        date: newBooking[0].date,
-        time: newBooking[0].time,
-        createdAt: newBooking[0].created_at
-      }
-    });
-  } catch (error) {
-    console.error('❌ Booking error:', error);
-    res.status(500).json({ message: 'Booking failed' });
-  }
-});
-
->>>>>>> b7b4e5c3fbe6bf1c02d52a2345e8963fa63261d6
 // --------------------------
 // Get appointments for doctor (FIXED)
 // --------------------------
