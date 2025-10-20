@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Patient Info - ClinicConnect</title>
+    <link rel="stylesheet" href="css/PatientInfo.css" />
+    <script defer src="js/PatientInfo.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <img src="images/logo.svg" alt="Logo" class="logo">
+        <ul>
+            <li><a href="ViewSchedule.html">View Schedule</a></li>
+            <li><a class="active" href="PatientInfo.html">Patient Info</a></li>
+        </ul>
+        <div class="logged-in-container">
+            <span class="logged-in-text" id="doctorNameDisplay">Loading...</span>
+            <a href="#">
+                <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
+            </a>
+            <a href="#" class="logout-btn" id="logoutBtn">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="profile-container">
+        <h2 class="profile-title">Patient Information Management</h2>
+
+        <!-- Patient Selection -->
+        <div class="patient-selection">
+            <label for="patientSelect"><strong>Select Patient:</strong></label>
+            <select id="patientSelect" class="patient-dropdown">
+                <option value="">-- Choose a Patient --</option>
+            </select>
+            <button id="loadPatientBtn" class="action-btn">Load Patient Info</button>
+            <button id="editPatientBtn" class="action-btn" style="display: none;">Edit Information</button>
+        </div>
+
+        <!-- Patient Info Form (This is where doctor enters ALL data) -->
+        <form id="patientInfoForm" class="patient-form">
+            <div class="form-header">
+                <h3>Enter Patient Medical Information</h3>
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">Save All Information</button>
+                    <button type="button" id="cancelBtn" class="cancel-btn" style="display: none;">Cancel</button>
+                </div>
+            </div>
+
+            <section class="profile-sections">
+                <!-- Left Sidebar -->
+                <div class="left-panel">
+                    <div class="profile-card">
+                        <img src="images/Generic avatar.png" alt="Profile" class="profile-pic" />
+                        <h3>Profile Overview</h3>
+                        
+                        <div class="form-group">
+                            <label for="patientFullName"><b>Full Name:</b></label>
+                            <input type="text" id="patientFullName" class="readonly-field" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientAge"><b>Age:</b></label>
+                            <input type="text" id="patientAge" class="readonly-field" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientGender"><b>Gender:</b></label>
+                            <select id="patientGender" name="gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientLanguage"><b>Language:</b></label>
+                            <input type="text" id="patientLanguage" name="language" placeholder="Enter primary language">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientHeight"><b>Height:</b></label>
+                            <input type="text" id="patientHeight" name="height" placeholder="e.g., 5'10&quot or 178cm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientWeight"><b>Weight:</b></label>
+                            <input type="text" id="patientWeight" name="weight" placeholder="e.g., 70kg or 154lbs">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientEthnicity"><b>Ethnicity:</b></label>
+                            <input type="text" id="patientEthnicity" name="ethnicity" placeholder="Enter ethnicity">
+                        </div>
+                    </div>
+
+                    <div class="card toggle-section">
+                        <h3 class="toggle-header">Allergies ⯆</h3>
+                        <div class="toggle-content">
+                            <div class="form-group">
+                                <textarea id="allergies" name="allergies" placeholder="List any allergies (separate with commas)" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card toggle-section">
+                        <h3 class="toggle-header">Medical Notes ⯆</h3>
+                        <div class="toggle-content">
+                            <div class="form-group">
+                                <textarea id="medicalNotes" name="medicalNotes" placeholder="Enter medical notes, observations, and history" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content -->
+                <div class="right-panel">
+                    <!-- Personal Details -->
+                    <div class="card">
+                        <h3>Personal Details</h3>
+                        
+                        <div class="form-group">
+                            <label for="patientPhone"><b>Phone:</b></label>
+                            <input type="text" id="patientPhone" class="readonly-field" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientEmail"><b>Email:</b></label>
+                            <input type="email" id="patientEmail" class="readonly-field" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="patientAddress"><b>Address:</b></label>
+                            <textarea id="patientAddress" name="address" placeholder="Enter full address" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Prescription Information -->
+                    <div class="card">
+                        <h3>Prescription Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="deliveryType"><b>Delivery Type:</b></label>
+                            <select id="deliveryType" name="deliveryType">
+                                <option value="">Select Delivery Type</option>
+                                <option value="Oral">Oral</option>
+                                <option value="Injection">Injection</option>
+                                <option value="Topical">Topical</option>
+                                <option value="Inhalation">Inhalation</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="drugLine1"><b>Primary Medication:</b></label>
+                            <input type="text" id="drugLine1" name="drugLine1" placeholder="Enter primary medication">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="drugLine2"><b>Secondary Medication:</b></label>
+                            <input type="text" id="drugLine2" name="drugLine2" placeholder="Enter secondary medication">
+                        </div>
+                    </div>
+
+                    <!-- Medication Details -->
+                    <div class="card">
+                        <h3>Medication Details</h3>
+                        
+                        <div class="medication-section">
+                            <h4>Medication 1</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Brand Name:</label>
+                                    <input type="text" id="drugBrand1" name="drugBrand1" placeholder="Brand name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Generic Name:</label>
+                                    <input type="text" id="drugGeneric1" name="drugGeneric1" placeholder="Generic name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Dosage:</label>
+                                    <input type="text" id="drugDosage1" name="drugDosage1" placeholder="e.g., 500mg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pack:</label>
+                                    <input type="text" id="drugPack1" name="drugPack1" placeholder="e.g., 30 tablets">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Form:</label>
+                                    <input type="text" id="drugForm1" name="drugForm1" placeholder="e.g., Tablet, Capsule">
+                                </div>
+                                <div class="form-group">
+                                    <label>Manufacturer:</label>
+                                    <input type="text" id="drugManufacturer1" name="drugManufacturer1" placeholder="Manufacturer name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="medication-section">
+                            <h4>Medication 2</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Brand Name:</label>
+                                    <input type="text" id="drugBrand2" name="drugBrand2" placeholder="Brand name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Generic Name:</label>
+                                    <input type="text" id="drugGeneric2" name="drugGeneric2" placeholder="Generic name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Dosage:</label>
+                                    <input type="text" id="drugDosage2" name="drugDosage2" placeholder="e.g., 500mg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pack:</label>
+                                    <input type="text" id="drugPack2" name="drugPack2" placeholder="e.g., 30 tablets">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Form:</label>
+                                    <input type="text" id="drugForm2" name="drugForm2" placeholder="e.g., Tablet, Capsule">
+                                </div>
+                                <div class="form-group">
+                                    <label>Manufacturer:</label>
+                                    <input type="text" id="drugManufacturer2" name="drugManufacturer2" placeholder="Manufacturer name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="medication-section">
+                            <h4>Medication 3</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Brand Name:</label>
+                                    <input type="text" id="drugBrand3" name="drugBrand3" placeholder="Brand name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Generic Name:</label>
+                                    <input type="text" id="drugGeneric3" name="drugGeneric3" placeholder="Generic name">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Dosage:</label>
+                                    <input type="text" id="drugDosage3" name="drugDosage3" placeholder="e.g., 500mg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pack:</label>
+                                    <input type="text" id="drugPack3" name="drugPack3" placeholder="e.g., 30 tablets">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Form:</label>
+                                    <input type="text" id="drugForm3" name="drugForm3" placeholder="e.g., Tablet, Capsule">
+                                </div>
+                                <div class="form-group">
+                                    <label>Manufacturer:</label>
+                                    <input type="text" id="drugManufacturer3" name="drugManufacturer3" placeholder="Manufacturer name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+        <!-- Patient Info Display (Initially hidden) -->
+        <div id="patientDisplay" class="patient-display" style="display: none;">
+            <div class="display-header">
+                <h3>Patient Medical Record</h3>
+                <button id="displayEditBtn" class="action-btn">Edit Information</button>
+            </div>
+
+            <section class="profile-sections">
+                <!-- Left Sidebar -->
+                <div class="left-panel">
+                    <div class="profile-card">
+                        <img src="images/Generic avatar.png" alt="Profile" class="profile-pic" />
+                        <h3>Profile Overview</h3>
+                        <p><b>Gender:</b> <span id="displayGender">Not specified</span></p>
+                        <p><b>Age:</b> <span id="displayAge">Not specified</span></p>
+                        <p><b>Language:</b> <span id="displayLanguage">Not specified</span></p>
+                        <p><b>Height:</b> <span id="displayHeight">Not specified</span></p>
+                        <p><b>Weight:</b> <span id="displayWeight">Not specified</span></p>
+                        <p><b>Ethnicity:</b> <span id="displayEthnicity">Not specified</span></p>
+                    </div>
+
+                    <div class="card toggle-section">
+                        <h3 class="toggle-header">Allergies ⯆</h3>
+                        <div class="toggle-content">
+                            <ul id="displayAllergyList">
+                                <li>No allergies recorded</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card toggle-section">
+                        <h3 class="toggle-header">Medical Notes ⯆</h3>
+                        <div class="toggle-content">
+                            <p id="displayMedicalNotes">No medical notes available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content -->
+                <div class="right-panel">
+                    <!-- Personal Details -->
+                    <div class="card">
+                        <h3>Personal Details</h3>
+                        <p><b>Name:</b> <span id="displayFullName">Not specified</span></p>
+                        <p><b>Address:</b> <span id="displayAddress">Not specified</span></p>
+                        <p><b>Phone:</b> <span id="displayPhone">Not specified</span></p>
+                        <p><b>Email:</b> <span id="displayEmail">Not specified</span></p>
+                    </div>
+
+                    <!-- Prescription -->
+                    <div class="card">
+                        <h3>Prescription</h3>
+                        <p><b>Delivery Type:</b> <span id="displayDeliveryType">Not specified</span></p>
+                        <p><b>Primary Medication:</b> <span id="displayDrugLine1">Not specified</span></p>
+                        <p><b>Secondary Medication:</b> <span id="displayDrugLine2">Not specified</span></p>
+                    </div>
+
+                    <!-- Used Drug -->
+                    <div class="card">
+                        <h3>Medication History</h3>
+                        <table id="drug-table">
+                            <thead>
+                                <tr>
+                                    <th>Brand Name</th>
+                                    <th>Generic Name</th>
+                                    <th>Dosage</th>
+                                    <th>Pack</th>
+                                    <th>Form</th>
+                                    <th>Manufacturer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="displayDrugBrand1">-</td>
+                                    <td id="displayDrugGeneric1">-</td>
+                                    <td id="displayDrugDosage1">-</td>
+                                    <td id="displayDrugPack1">-</td>
+                                    <td id="displayDrugForm1">-</td>
+                                    <td id="displayDrugManufacturer1">-</td>
+                                </tr>
+                                <tr>
+                                    <td id="displayDrugBrand2">-</td>
+                                    <td id="displayDrugGeneric2">-</td>
+                                    <td id="displayDrugDosage2">-</td>
+                                    <td id="displayDrugPack2">-</td>
+                                    <td id="displayDrugForm2">-</td>
+                                    <td id="displayDrugManufacturer2">-</td>
+                                </tr>
+                                <tr>
+                                    <td id="displayDrugBrand3">-</td>
+                                    <td id="displayDrugGeneric3">-</td>
+                                    <td id="displayDrugDosage3">-</td>
+                                    <td id="displayDrugPack3">-</td>
+                                    <td id="displayDrugForm3">-</td>
+                                    <td id="displayDrugManufacturer3">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-actions">
+                <button id="confirmLogout" class="btn-primary">Yes</button>
+                <button id="cancelLogout" class="btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <p id="successMessage">Patient information saved successfully!</p>
+            <div class="modal-actions">
+                <button id="closeSuccess" class="btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/PatientInfo.js"></script>
+</body>
+</html>

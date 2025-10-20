@@ -4,22 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>View Schedule</title>
-  <link rel="stylesheet" href="ViewSchedule.css" />
+  <link rel="stylesheet" href="css/ViewSchedule.css" />
 </head>
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
     <img src="images/logo.svg" alt="Logo" class="logo">
     <ul>
-      <!--<li><a href="index.html">Home</a></li>
-      <li><a href="#aboutUS">About</a></li>
-      <li><a href="ContactUs.html">Contact Us</a></li>
-      <li><a href="FAQ.html">FAQ</a></li>-->
       <li><a class="active" href="ViewSchedule.html">View Schedule</a></li>
       <li><a href="PatientInfo.html">Patient Info</a></li>
     </ul>
     <div class="logged-in-container">
-      <span class="logged-in-text">Dr. Bucannon</span>
+      <span class="logged-in-text" id="doctorNameDisplay">Loading...</span>
       <a href="#">
         <img src="images/Generic avatar.png" alt="User Icon" class="logged-in-avatar" />
       </a>
@@ -67,32 +63,6 @@
     </div>
   </div>
 
-  <script src="ViewSchedule.js"></script>
-  <script>
-    // Logout Modal Script
-    const logoutBtn = document.getElementById("logoutBtn");
-    const logoutModal = document.getElementById("logoutModal");
-    const confirmLogout = document.getElementById("confirmLogout");
-    const cancelLogout = document.getElementById("cancelLogout");
-
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      logoutModal.style.display = "flex";
-    });
-
-    cancelLogout.addEventListener("click", () => {
-      logoutModal.style.display = "none";
-    });
-
-    confirmLogout.addEventListener("click", () => {
-      window.location.href = "index.html"; // Redirect to home/login
-    });
-
-    window.addEventListener("click", (e) => {
-      if (e.target === logoutModal) {
-        logoutModal.style.display = "none";
-      }
-    });
-  </script>
+  <script src="js/ViewSchedule.js"></script>
 </body>
 </html>

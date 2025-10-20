@@ -1,3 +1,4 @@
+// login.js
 (function() {
   const form = document.getElementById('loginForm');
   if (!form) return;
@@ -40,17 +41,13 @@
       const result = await response.json();
 
       if (!response.ok) {
-        // Display backend validation errors
         if (result.message.toLowerCase().includes('email')) emailError.textContent = result.message;
         else if (result.message.toLowerCase().includes('password')) passwordError.textContent = result.message;
         else alert(result.message);
         return;
       }
 
-      // Save user info (including appointments) in localStorage
-      if (result.user) {
-        localStorage.setItem('loggedUser', JSON.stringify(result.user));
-      }
+      if (result.user) localStorage.setItem('loggedUser', JSON.stringify(result.user));
 
       if (successDiv) {
         successDiv.textContent = 'Login successful! Redirecting...';
@@ -60,11 +57,16 @@
       form.reset();
 
       setTimeout(() => {
-        window.location.href = 'booking.html'; // redirect to booking page
-      }, 1500);
+        // Redirect based on role
+        if (result.user.doctorId) {
+          window.location.href = 'viewschedule.html';
+        } else {
+          window.location.href = 'booking.html';
+        }
+      }, 1000);
 
     } catch (err) {
-      console.error('Login error:', err);
+      console.error(err);
       alert('Login failed. Please try again.');
     }
   });
