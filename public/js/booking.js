@@ -17,6 +17,12 @@
   const confirmLogout = document.getElementById("confirmLogout");
   const cancelLogout = document.getElementById("cancelLogout");
 
+  // Debug: Check if logout elements exist
+  console.log('Logout Button:', logoutBtn);
+  console.log('Logout Modal:', logoutModal);
+  console.log('Confirm Logout:', confirmLogout);
+  console.log('Cancel Logout:', cancelLogout);
+
   // --------------------------
   // State
   // --------------------------
@@ -42,30 +48,53 @@
   displayWelcome();
 
   // --------------------------
-  // Logout Modal
+  // Logout Modal - FIXED VERSION
   // --------------------------
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", e => {
+  if (logoutBtn && logoutModal && confirmLogout && cancelLogout) {
+    console.log('Setting up logout listeners...');
+    
+    logoutBtn.addEventListener("click", (e) => {
+      console.log('Logout button clicked!');
       e.preventDefault();
       logoutModal.style.display = "flex";
     });
-  }
-  if (cancelLogout) {
-    cancelLogout.addEventListener("click", () => logoutModal.style.display = "none");
-  }
-  if (confirmLogout) {
+
+    cancelLogout.addEventListener("click", () => {
+      console.log('Cancel logout clicked');
+      logoutModal.style.display = "none";
+    });
+
     confirmLogout.addEventListener("click", async () => {
+      console.log('Confirm logout clicked');
       try {
-        await fetch('http://localhost:3000/logout', { method: 'POST', credentials: 'include' });
+        await fetch('http://localhost:3000/logout', { 
+          method: 'POST', 
+          credentials: 'include' 
+        });
         localStorage.removeItem('loggedUser'); 
-        if (welcome) welcome.textContent = 'Welcome, Guest';
         window.location.href = "index.html";
       } catch (err) {
-        console.error('Logout failed', err);
+        console.error('Logout failed:', err);
+        // Still logout locally even if server request fails
+        localStorage.removeItem('loggedUser');
+        window.location.href = "index.html";
       }
     });
+
+    // Close modal when clicking outside
+    window.addEventListener("click", (e) => { 
+      if (e.target === logoutModal) {
+        logoutModal.style.display = "none";
+      }
+    });
+  } else {
+    console.error('Logout elements missing:', {
+      logoutBtn: !!logoutBtn,
+      logoutModal: !!logoutModal,
+      confirmLogout: !!confirmLogout,
+      cancelLogout: !!cancelLogout
+    });
   }
-  window.addEventListener("click", e => { if (e.target === logoutModal) logoutModal.style.display = "none"; });
 
   // --------------------------
   // Calendar Renderer
@@ -178,48 +207,68 @@
     cancelBook.addEventListener("click", () => bookModal.style.display = "none");
 
     confirmBook.addEventListener("click", async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem('loggedUser'));
-    if (!user) throw new Error("User not logged in");
+      try {
+        const user = JSON.parse(localStorage.getItem('loggedUser'));
+        if (!user) throw new Error("User not logged in");
 
-    const payload = {
-      date: selectedDate.toISOString().split('T')[0],
-      time: selectedTime,
-      userId: user.id
-    };
+        // DEBUG: Log what the user selected
+        console.log('Selected date object:', selectedDate);
+        console.log('Selected date (toDateString):', selectedDate.toDateString());
+        console.log('Selected time:', selectedTime);
 
-    const res = await fetch("http://localhost:3000/book", { 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+        // FIX: Format date WITHOUT timezone conversion
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        console.log('Formatted date being sent:', formattedDate);
+
+        const payload = {
+          date: formattedDate,
+          time: selectedTime,
+          userId: user.id
+        };
+
+        console.log('Full booking payload:', payload); // Debug log
+
+        const res = await fetch("http://localhost:3000/book", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.message || "Booking failed");
+        }
+
+        // Get the booking details from server response
+        const result = await res.json();
+        console.log('Booking confirmed by server:', result);
+
+        // Add the ACTUAL booking to user's appointment history
+        if (!user.appointments) user.appointments = [];
+        user.appointments.push({
+          id: result.booking?.id || Date.now(),
+          date: formattedDate,
+          time: selectedTime,
+          doctor: "Not assigned",
+          status: "Confirmed"
+        });
+
+        // Save back to localStorage
+        localStorage.setItem('loggedUser', JSON.stringify(user));
+        console.log('Updated user in localStorage:', user);
+
+        bookModal.style.display = "none";
+        window.location.href = "bookingConfirmation.html";
+
+      } catch (err) {
+        console.error(err);
+        alert(err.message || "Booking failed. Please try again.");
+      }
     });
-
-    if (!res.ok) {
-      const errData = await res.json();
-      throw new Error(errData.message || "Booking failed");
-    }
-
-    // ✅ Add booking to user's appointment history
-    if (!user.appointments) user.appointments = [];
-    user.appointments.push({
-      date: selectedDate.toDateString(),
-      time: selectedTime,
-      doctor: "Not assigned", // optional, you can fill if you have doctor info
-      status: "Confirmed"
-    });
-
-    // Save back to localStorage
-    localStorage.setItem('loggedUser', JSON.stringify(user));
-
-    bookModal.style.display = "none";
-    window.location.href = "bookingConfirmation.html";
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message || "Booking failed. Please try again.");
-  }
-});
-
 
     window.addEventListener("click", e => { if (e.target === bookModal) bookModal.style.display = "none"; });
   }
