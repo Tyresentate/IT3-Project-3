@@ -4,11 +4,12 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f5f9fa;
+    padding: 0;
+    background: #fff;
     color: #333;
 }
 
-/* Navbar */
+/* Navbar - Exact same as ViewSchedule */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -88,23 +89,12 @@ body {
 }
 
 /* Selection Section */
-.selection-section {
-    margin-bottom: 30px;
-}
-
-.selection-card {
+.patient-selection {
     background: #fff;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-}
-
-.selection-card h3 {
-    margin: 0 0 20px 0;
-    color: #145e67;
-}
-
-.selection-controls {
+    margin-bottom: 30px;
     display: flex;
     gap: 15px;
     align-items: center;
@@ -131,26 +121,41 @@ body {
     text-decoration: none;
     display: inline-block;
     text-align: center;
-}
-
-.action-btn.primary {
     background: #145e67;
     color: #fff;
 }
 
-.action-btn.primary:hover {
+.action-btn:hover {
     background: #0d3f45;
     transform: translateY(-1px);
 }
 
-.action-btn.secondary {
-    background: #6c757d;
-    color: #fff;
+.save-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
-.action-btn.secondary:hover {
+.save-btn:hover {
+    background: #218838;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
     background: #545b62;
-    transform: translateY(-1px);
 }
 
 /* Layout Sections */
@@ -332,6 +337,170 @@ body {
     padding-bottom: 8px;
 }
 
+/* Enhanced Allergies Section */
+.allergies-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.allergies-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.allergies-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.allergies-dropdown-btn {
+    background: #145e67;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.allergies-dropdown-btn:hover {
+    background: #0d3f45;
+}
+
+.allergies-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    right: 0;
+}
+
+.allergies-dropdown-content.show {
+    display: block;
+}
+
+.allergy-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.allergy-option:hover {
+    background-color: #f0f8fa;
+}
+
+.allergy-option:last-child {
+    border-bottom: none;
+}
+
+.selected-allergies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.allergy-tag {
+    background: #e9f7f9;
+    color: #145e67;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #b8e2e8;
+}
+
+.remove-allergy {
+    background: none;
+    border: none;
+    color: #e63946;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+/* Enhanced Medical Notes Section */
+.medical-notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.medical-notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.medical-notes-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.medical-notes-dropdown-btn {
+    background: #145e67;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.medical-notes-dropdown-btn:hover {
+    background: #0d3f45;
+}
+
+.medical-notes-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    right: 0;
+}
+
+.medical-notes-dropdown-content.show {
+    display: block;
+}
+
+.medical-note-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.medical-note-option:hover {
+    background-color: #f0f8fa;
+}
+
+.medical-note-option:last-child {
+    border-bottom: none;
+}
+
 /* Tables */
 .medication-table {
     width: 100%;
@@ -441,13 +610,80 @@ body {
     background: #545b62;
 }
 
+/* Logout Modal - Same as ViewSchedule */
+.logout-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.logout-modal-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.logout-modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.logout-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.confirm-btn {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(230, 57, 70, 0.3);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.confirm-btn:hover {
+    background: #c71f2d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(230, 57, 70, 0.3);
+}
+
+.cancel-btn {
+    background: #ddd;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background: #bbb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .profile-sections {
         flex-direction: column;
     }
     
-    .selection-controls {
+    .patient-selection {
         flex-direction: column;
         align-items: stretch;
     }
@@ -465,8 +701,19 @@ body {
         padding: 20px;
     }
 
-    
     .navbar {
         padding: 15px 20px;
+    }
+    
+    .allergies-header, .medical-notes-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .allergies-dropdown-content,
+    .medical-notes-dropdown-content {
+        right: auto;
+        left: 0;
     }
 }

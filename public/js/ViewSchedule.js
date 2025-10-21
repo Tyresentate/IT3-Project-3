@@ -1,4 +1,4 @@
-// ViewSchedule.js - COMPLETELY REDONE VERSION
+// ViewSchedule.js - CLEAN WORKING VERSION
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Loading ViewSchedule...');
     
@@ -102,13 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             const bookings = await response.json();
-            console.log('✅ Received bookings:', bookings);
             
             // Transform data to match our expected format
             allAppointments = bookings.map(booking => ({
                 id: booking.booking_id,
                 user_id: booking.user_id,
-                date: formatDatabaseDate(booking.date), // Ensure consistent date format
+                date: formatDatabaseDate(booking.date),
                 time: booking.time,
                 name: booking.name || `Patient ${booking.user_id}`,
                 reason: booking.reason || 'General Consultation',
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // If it's a Date object or other format, convert to YYYY-MM-DD
         const date = new Date(dateString);
-        if (isNaN(date.getTime())) return dateString; // Return original if invalid
+        if (isNaN(date.getTime())) return dateString;
         
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -150,6 +149,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function createSampleAppointments() {
         const today = new Date();
         const sampleAppointments = [];
+        const patientNames = [
+            'John Smith', 'Sarah Johnson', 'Mike Davis', 'Emily Wilson',
+            'Robert Brown', 'Lisa Anderson', 'David Miller', 'Jennifer Taylor'
+        ];
+        const reasons = [
+            'Annual Checkup', 'Follow-up Visit', 'Vaccination', 'Consultation',
+            'Blood Test', 'Physical Examination', 'Prescription Refill', 'Specialist Referral'
+        ];
         
         for (let i = 0; i < 7; i++) {
             const date = new Date();
@@ -158,18 +165,19 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add 1-3 appointments per day
             const numAppointments = Math.floor(Math.random() * 3) + 1;
-            const times = ['09:00', '11:00', '14:00', '15:30'];
+            const times = ['09:00', '10:30', '14:00', '15:30'];
             
             for (let j = 0; j < numAppointments; j++) {
+                const patientIndex = (i * 3 + j) % patientNames.length;
                 sampleAppointments.push({
                     id: sampleAppointments.length + 1,
                     user_id: 100 + sampleAppointments.length,
                     date: dateStr,
-                    time: times[j] || '10:00',
-                    name: `Patient ${sampleAppointments.length + 1}`,
-                    reason: ['Checkup', 'Consultation', 'Follow-up', 'Vaccination'][j % 4],
+                    time: times[j] || '11:00',
+                    name: patientNames[patientIndex],
+                    reason: reasons[(i * 3 + j) % reasons.length],
                     age: Math.floor(Math.random() * 50) + 20,
-                    notes: 'Sample appointment for demonstration'
+                    notes: 'Regular appointment scheduled'
                 });
             }
         }
@@ -304,8 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load schedule for specific date
     function loadSchedule(dateStr) {
-        console.log(`📅 Loading schedule for: ${dateStr}`);
-        
         scheduleList.innerHTML = "<div class='loading-message'>Loading appointments...</div>";
         patientDetails.innerHTML = "<p>Select a patient to view details.</p>";
 
@@ -331,8 +337,6 @@ document.addEventListener('DOMContentLoaded', function() {
             patientDetails.innerHTML = "<p>No patients to display.</p>";
             return;
         }
-
-        console.log(`📋 Displaying ${appointments.length} appointments for ${dateStr}`);
 
         // Sort by time
         const sortedAppointments = appointments.sort((a, b) => {
@@ -375,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!timeString) return '--:--';
         
         try {
-            // Handle both "HH:MM" and "HH:MM:SS" formats
             const timeParts = timeString.split(':');
             const hours = parseInt(timeParts[0]);
             const minutes = timeParts[1];
@@ -459,72 +462,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add refresh button
     const refreshBtn = document.createElement('button');
     refreshBtn.textContent = 'Refresh Appointments';
-    refreshBtn.style.margin = '10px';
-    refreshBtn.style.padding = '8px 16px';
-    refreshBtn.style.backgroundColor = '#007bff';
-    refreshBtn.style.color = 'white';
-    refreshBtn.style.border = 'none';
-    refreshBtn.style.borderRadius = '4px';
-    refreshBtn.style.cursor = 'pointer';
+    refreshBtn.className = 'refresh-btn'; // Using CSS class instead of inline styles
     refreshBtn.addEventListener('click', window.refreshAppointments);
 
-    // Add debug button
-    const debugBtn = document.createElement('button');
-    debugBtn.textContent = 'Debug Info';
-    debugBtn.style.margin = '10px';
-    debugBtn.style.padding = '8px 16px';
-    debugBtn.style.backgroundColor = '#28a745';
-    debugBtn.style.color = 'white';
-    debugBtn.style.border = 'none';
-    debugBtn.style.borderRadius = '4px';
-    debugBtn.style.cursor = 'pointer';
-    debugBtn.addEventListener('click', () => {
-        console.log('🔍 DEBUG INFO:');
-        console.log('Total appointments:', allAppointments.length);
-        console.log('All appointments:', allAppointments);
-        console.log('Current date:', formatDateForDisplay(new Date()));
-        
-        const activeDate = document.querySelector('.day.active')?.dataset.date;
-        console.log('Active date:', activeDate);
-        
-        if (activeDate) {
-            const dayAppointments = allAppointments.filter(apt => apt.date === activeDate);
-            console.log(`Appointments for ${activeDate}:`, dayAppointments);
-        }
-    });
+    
 
     const controls = document.querySelector('.calendar-controls');
     if (controls) {
         controls.appendChild(refreshBtn);
-        controls.appendChild(debugBtn);
-    }
-
-    // Add some test data if no appointments exist
-    window.addTestAppointments = function() {
-        if (allAppointments.length === 0) {
-            allAppointments = createSampleAppointments();
-            refreshAppointments();
-            alert('Sample appointments added!');
-        } else {
-            alert('Appointments already exist. Use refresh to reload data.');
-        }
-    };
-
-    // Add test data button (only show if no appointments)
-    if (allAppointments.length === 0) {
-        const testDataBtn = document.createElement('button');
-        testDataBtn.textContent = 'Add Sample Data';
-        testDataBtn.style.margin = '10px';
-        testDataBtn.style.padding = '8px 16px';
-        testDataBtn.style.backgroundColor = '#dc3545';
-        testDataBtn.style.color = 'white';
-        testDataBtn.style.border = 'none';
-        testDataBtn.style.borderRadius = '4px';
-        testDataBtn.style.cursor = 'pointer';
-        testDataBtn.addEventListener('click', window.addTestAppointments);
-        
-        if (controls) {
-            controls.appendChild(testDataBtn);
-        }
+        controls.appendChild(sampleDataBtn);
     }
 });
