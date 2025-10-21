@@ -36,6 +36,9 @@ function initPatientInfo() {
     // Initialize toggle sections
     initToggleSections();
 
+    // Initialize dropdown functionality
+    initDropdowns();
+
     // Event listeners
     loadPatientBtn.addEventListener('click', handleLoadPatient);
     editPatientBtn.addEventListener('click', handleEditPatient);
@@ -182,6 +185,9 @@ function initPatientInfo() {
             document.getElementById('drugLine1').value = info.drug_line_1 || '';
             document.getElementById('drugLine2').value = info.drug_line_2 || '';
             
+            // Update selected allergies display
+            updateSelectedAllergiesDisplay(info.allergies);
+            
             // Medication details
             document.getElementById('drugBrand1').value = info.drug_brand_1 || '';
             document.getElementById('drugGeneric1').value = info.drug_generic_1 || '';
@@ -271,6 +277,8 @@ function initPatientInfo() {
         const formData = new FormData(patientInfoForm);
         const patientData = {
             userId: currentPatientId,
+            age: formData.get('age'),
+            phone: formData.get('phone'),
             gender: formData.get('gender'),
             language: formData.get('language'),
             height: formData.get('height'),
@@ -350,6 +358,8 @@ function initPatientInfo() {
                 }
             }
         });
+        // Clear selected allergies
+        document.getElementById('selectedAllergies').innerHTML = '';
     }
 
     function initToggleSections() {
@@ -362,6 +372,136 @@ function initPatientInfo() {
                     : header.textContent.replace("⯅", "⯆");
             });
         });
+    }
+
+    function initDropdowns() {
+        // Allergies dropdown
+        const allergiesDropdownBtn = document.querySelector('.allergies-dropdown-btn');
+        const allergiesDropdownContent = document.querySelector('.allergies-dropdown-content');
+        const allergyOptions = document.querySelectorAll('.allergy-option');
+        
+        allergiesDropdownBtn.addEventListener('click', () => {
+            allergiesDropdownContent.classList.toggle('show');
+        });
+        
+        allergyOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const allergy = option.getAttribute('data-allergy');
+                addAllergy(allergy);
+                allergiesDropdownContent.classList.remove('show');
+            });
+        });
+        
+        // Medical notes dropdown
+        const medicalNotesDropdownBtn = document.querySelector('.medical-notes-dropdown-btn');
+        const medicalNotesDropdownContent = document.querySelector('.medical-notes-dropdown-content');
+        const medicalNoteOptions = document.querySelectorAll('.medical-note-option');
+        
+        medicalNotesDropdownBtn.addEventListener('click', () => {
+            medicalNotesDropdownContent.classList.toggle('show');
+        });
+        
+        medicalNoteOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const template = option.getAttribute('data-template');
+                addMedicalNote(template);
+                medicalNotesDropdownContent.classList.remove('show');
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!e.target.matches('.allergies-dropdown-btn')) {
+                allergiesDropdownContent.classList.remove('show');
+            }
+            if (!e.target.matches('.medical-notes-dropdown-btn')) {
+                medicalNotesDropdownContent.classList.remove('show');
+            }
+        });
+    }
+
+    function addAllergy(allergy) {
+        const allergiesTextarea = document.getElementById('allergies');
+        const selectedAllergiesContainer = document.getElementById('selectedAllergies');
+        
+        // Check if allergy is already selected
+        const currentAllergies = allergiesTextarea.value.split(',').map(a => a.trim()).filter(a => a);
+        if (currentAllergies.includes(allergy)) {
+            return; // Allergy already exists
+        }
+        
+        // Add to textarea
+        if (allergiesTextarea.value.trim() === '') {
+            allergiesTextarea.value = allergy;
+        } else {
+            allergiesTextarea.value += ', ' + allergy;
+        }
+        
+        // Add visual tag
+        const allergyTag = document.createElement('div');
+        allergyTag.className = 'allergy-tag';
+        allergyTag.innerHTML = `
+            ${allergy}
+            <button type="button" class="remove-allergy" data-allergy="${allergy}">×</button>
+        `;
+        selectedAllergiesContainer.appendChild(allergyTag);
+        
+        // Add remove functionality
+        allergyTag.querySelector('.remove-allergy').addEventListener('click', function() {
+            removeAllergy(allergy);
+        });
+    }
+
+    function removeAllergy(allergy) {
+        const allergiesTextarea = document.getElementById('allergies');
+        const currentAllergies = allergiesTextarea.value.split(',').map(a => a.trim()).filter(a => a);
+        const index = currentAllergies.indexOf(allergy);
+        
+        if (index > -1) {
+            currentAllergies.splice(index, 1);
+            allergiesTextarea.value = currentAllergies.join(', ');
+        }
+        
+        // Remove visual tag
+        const allergyTags = document.querySelectorAll('.allergy-tag');
+        allergyTags.forEach(tag => {
+            if (tag.textContent.includes(allergy)) {
+                tag.remove();
+            }
+        });
+    }
+
+    function addMedicalNote(template) {
+        const medicalNotesTextarea = document.getElementById('medicalNotes');
+        
+        if (medicalNotesTextarea.value.trim() === '') {
+            medicalNotesTextarea.value = template;
+        } else {
+            medicalNotesTextarea.value += '\n\n' + template;
+        }
+    }
+
+    function updateSelectedAllergiesDisplay(allergies) {
+        const selectedAllergiesContainer = document.getElementById('selectedAllergies');
+        selectedAllergiesContainer.innerHTML = '';
+        
+        if (allergies) {
+            const allergiesArray = allergies.split(',').map(a => a.trim()).filter(a => a);
+            allergiesArray.forEach(allergy => {
+                const allergyTag = document.createElement('div');
+                allergyTag.className = 'allergy-tag';
+                allergyTag.innerHTML = `
+                    ${allergy}
+                    <button type="button" class="remove-allergy" data-allergy="${allergy}">×</button>
+                `;
+                selectedAllergiesContainer.appendChild(allergyTag);
+                
+                // Add remove functionality
+                allergyTag.querySelector('.remove-allergy').addEventListener('click', function() {
+                    removeAllergy(allergy);
+                });
+            });
+        }
     }
 
     function initModals() {
@@ -383,7 +523,7 @@ function initPatientInfo() {
 
         confirmLogout.addEventListener("click", () => {
             localStorage.removeItem('loggedUser');
-            window.location.href = "index.html";
+            window.location.href = 'index.html';
         });
 
         closeSuccess.addEventListener("click", () => {

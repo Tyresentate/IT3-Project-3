@@ -94,7 +94,7 @@ body {
 }
 
 .calendar-controls button {
-  background: #145e67; /* solid colour */
+  background: #145e67;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -102,16 +102,15 @@ body {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3); /* subtle shadow */
+  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3);
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .calendar-controls button:hover {
-  background: #0d3f45; /* slightly darker shade */
-  transform: translateY(-1px); /* subtle lift effect */
-  box-shadow: 0 4px 6px rgba(20, 94, 103, 0.3); /* subtle increase */
+  background: #0d3f45;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(20, 94, 103, 0.3);
 }
-
 
 .month-nav {
   display: flex;
@@ -126,10 +125,14 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .month-nav button:hover {
   background: #0d3f45;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(20, 94, 103, 0.3);
 }
 
 .month-nav span {
@@ -254,6 +257,21 @@ body {
   color: #145e67;
 }
 
+/* Appointment Count */
+.appointment-count {
+  background: #145e67;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px auto 0 auto;
+  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .schedule-main {
@@ -263,16 +281,6 @@ body {
     flex-wrap: wrap;
     gap: 10px;
   }
-}
-
-/* Glowing dot for days with appointments */
-.appointment-dot {
-  width: 8px;
-  height: 8px;
-  background: #145e67;
-  border-radius: 50%;
-  margin: 4px auto 0 auto;
-  box-shadow: 0 0 6px #145e67;
 }
 
 /* Logout Modal */
@@ -315,10 +323,14 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(230, 57, 70, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .confirm-btn:hover {
   background: #c71f2d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(230, 57, 70, 0.3);
 }
 
 .cancel-btn {
@@ -328,8 +340,106 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .cancel-btn:hover {
   background: #bbb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Custom buttons for Refresh and Sample Data */
+.refresh-btn {
+  background: #145e67;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(20, 94, 103, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
+  margin: 10px;
+}
+
+.refresh-btn:hover {
+  background: #0d3f45;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(20, 94, 103, 0.3);
+}
+
+.sample-data-btn {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
+  margin: 10px;
+}
+
+.sample-data-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+}
+
+/* Loading and No Appointments States */
+.loading-message {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-style: italic;
+}
+
+.no-appointments {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.no-appointments p {
+  margin: 0 0 10px 0;
+}
+
+.help-text {
+  font-size: 14px;
+  color: #888;
+  font-style: italic;
+}
+
+/* Empty day cells for monthly view */
+.day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.day.empty:hover {
+  border: 2px solid transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Today indicator */
+.day.today {
+  position: relative;
+}
+
+.day.today::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  background: #e63946;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #e63946;
 }

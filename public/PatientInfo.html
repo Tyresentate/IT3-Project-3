@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Patient Info - ClinicConnect</title>
     <link rel="stylesheet" href="css/PatientInfo.css" />
-    <script defer src="js/PatientInfo.js"></script>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- NAVBAR - Same as ViewSchedule -->
     <nav class="navbar">
         <img src="images/logo.svg" alt="Logo" class="logo">
         <ul>
@@ -38,7 +37,7 @@
             <button id="editPatientBtn" class="action-btn" style="display: none;">Edit Information</button>
         </div>
 
-        <!-- Patient Info Form (This is where doctor enters ALL data) -->
+        <!-- Patient Info Form -->
         <form id="patientInfoForm" class="patient-form">
             <div class="form-header">
                 <h3>Enter Patient Medical Information</h3>
@@ -62,7 +61,7 @@
 
                         <div class="form-group">
                             <label for="patientAge"><b>Age:</b></label>
-                            <input type="text" id="patientAge" class="readonly-field" readonly>
+                            <input type="number" id="patientAge" name="age" placeholder="Enter age" min="0" max="120">
                         </div>
 
                         <div class="form-group">
@@ -97,20 +96,63 @@
                         </div>
                     </div>
 
+                    <!-- Allergies Section with Dropdown -->
                     <div class="card toggle-section">
                         <h3 class="toggle-header">Allergies ⯆</h3>
                         <div class="toggle-content">
-                            <div class="form-group">
-                                <textarea id="allergies" name="allergies" placeholder="List any allergies (separate with commas)" rows="4"></textarea>
+                            <div class="allergies-container">
+                                <div class="allergies-header">
+                                    <h4>Add Allergies</h4>
+                                    <div class="allergies-dropdown">
+                                        <button type="button" class="allergies-dropdown-btn">Add Allergy +</button>
+                                        <div class="allergies-dropdown-content">
+                                            <div class="allergy-option" data-allergy="Penicillin">Penicillin</div>
+                                            <div class="allergy-option" data-allergy="Aspirin">Aspirin</div>
+                                            <div class="allergy-option" data-allergy="Ibuprofen">Ibuprofen</div>
+                                            <div class="allergy-option" data-allergy="Sulfa drugs">Sulfa drugs</div>
+                                            <div class="allergy-option" data-allergy="Latex">Latex</div>
+                                            <div class="allergy-option" data-allergy="Peanuts">Peanuts</div>
+                                            <div class="allergy-option" data-allergy="Shellfish">Shellfish</div>
+                                            <div class="allergy-option" data-allergy="Eggs">Eggs</div>
+                                            <div class="allergy-option" data-allergy="Dairy">Dairy</div>
+                                            <div class="allergy-option" data-allergy="Codeine">Codeine</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="selected-allergies" id="selectedAllergies">
+                                    <!-- Selected allergies will appear here -->
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="allergies" name="allergies" placeholder="Or type allergies manually (separate with commas)" rows="3"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Medical Notes Section with Dropdown -->
                     <div class="card toggle-section">
                         <h3 class="toggle-header">Medical Notes ⯆</h3>
                         <div class="toggle-content">
-                            <div class="form-group">
-                                <textarea id="medicalNotes" name="medicalNotes" placeholder="Enter medical notes, observations, and history" rows="6"></textarea>
+                            <div class="medical-notes-container">
+                                <div class="medical-notes-header">
+                                    <h4>Add Common Notes</h4>
+                                    <div class="medical-notes-dropdown">
+                                        <button type="button" class="medical-notes-dropdown-btn">Add Template +</button>
+                                        <div class="medical-notes-dropdown-content">
+                                            <div class="medical-note-option" data-template="Patient presents with no significant medical history.">No Significant History</div>
+                                            <div class="medical-note-option" data-template="Patient reports mild symptoms, no acute distress.">Mild Symptoms</div>
+                                            <div class="medical-note-option" data-template="Patient in good general health, vitals stable.">Good Health</div>
+                                            <div class="medical-note-option" data-template="Follow-up appointment recommended in 2 weeks.">Follow-up</div>
+                                            <div class="medical-note-option" data-template="Patient reports improvement in symptoms.">Improving</div>
+                                            <div class="medical-note-option" data-template="Patient advised to maintain current treatment regimen.">Continue Treatment</div>
+                                            <div class="medical-note-option" data-template="Patient requires further diagnostic testing.">Needs Testing</div>
+                                            <div class="medical-note-option" data-template="Patient exhibits signs of infection.">Possible Infection</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="medicalNotes" name="medicalNotes" placeholder="Enter medical notes, observations, and history" rows="6"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,7 +166,7 @@
                         
                         <div class="form-group">
                             <label for="patientPhone"><b>Phone:</b></label>
-                            <input type="text" id="patientPhone" class="readonly-field" readonly>
+                            <input type="tel" id="patientPhone" name="phone" placeholder="Enter phone number">
                         </div>
 
                         <div class="form-group">
@@ -380,12 +422,12 @@
     </main>
 
     <!-- Logout Confirmation Modal -->
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
             <p>Are you sure you want to log out?</p>
-            <div class="modal-actions">
-                <button id="confirmLogout" class="btn-primary">Yes</button>
-                <button id="cancelLogout" class="btn-secondary">No</button>
+            <div class="logout-modal-actions">
+                <button id="confirmLogout" class="confirm-btn">Yes</button>
+                <button id="cancelLogout" class="cancel-btn">No</button>
             </div>
         </div>
     </div>
