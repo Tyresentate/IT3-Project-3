@@ -1,6 +1,15 @@
-// ViewSchedule.js - UPDATED VERSION WITH REAL PROFILE LOADING
+// ViewSchedule.js - UPDATED VERSION WITH LOGOUT AND REAL USER DATA
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Loading ViewSchedule...');
+    
+    // Check if user is logged in
+    const loggedUser = JSON.parse(localStorage.getItem('loggedUser') || '{}');
+    
+    if (!loggedUser.id || !loggedUser.doctorId) {
+        alert('Access denied. Please login as a doctor.');
+        window.location.href = 'login.html';
+        return;
+    }
     
     // Elements
     const calendarBar = document.querySelector(".calendar-bar");
@@ -65,19 +74,65 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
 
-    // Load doctor profile from server
+    // Initialize logout functionality
+    function initLogout() {
+        const logoutBtn = document.getElementById("logoutBtn");
+        const logoutModal = document.getElementById("logoutModal");
+        const confirmLogout = document.getElementById("confirmLogout");
+        const cancelLogout = document.getElementById("cancelLogout");
+
+        if (!logoutBtn) {
+            console.error('❌ Logout button not found!');
+            return;
+        }
+
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (logoutModal) {
+                logoutModal.style.display = "flex";
+            } else {
+                // Fallback: direct logout if modal doesn't exist
+                performLogout();
+            }
+        });
+
+        if (confirmLogout) {
+            confirmLogout.addEventListener("click", performLogout);
+        }
+
+        if (cancelLogout) {
+            cancelLogout.addEventListener("click", () => {
+                if (logoutModal) {
+                    logoutModal.style.display = "none";
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        if (logoutModal) {
+            window.addEventListener("click", (e) => {
+                if (e.target === logoutModal) {
+                    logoutModal.style.display = "none";
+                }
+            });
+        }
+    }
+
+    function performLogout() {
+        localStorage.removeItem('loggedUser');
+        window.location.href = "index.html";
+    }
+
+    // Load doctor profile from server OR use logged-in user data
     async function loadDoctorProfile() {
         console.log('👨‍⚕️ Fetching doctor profile from server...');
         
         try {
             // Try to get the logged-in doctor's profile
-            // You might need to adjust this endpoint based on your backend
             const response = await fetch('http://localhost:3000/doctor/profile', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include authentication token if needed
-                    // 'Authorization': `Bearer ${getAuthToken()}`
                 }
             });
             
@@ -85,39 +140,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 const profileData = await response.json();
                 doctorProfile = profileData;
                 console.log('✅ Doctor profile loaded:', doctorProfile);
-                
-                // Update the UI with real doctor data
-                updateDoctorProfileUI();
-                return profileData;
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
         } catch (error) {
             console.error('❌ Error loading doctor profile:', error);
-            console.log('📋 Using default doctor profile');
+            console.log('📋 Using logged-in user data as fallback');
             
-            // Fallback to default profile
+            // Fallback to logged-in user data
             doctorProfile = {
-                id: 1,
-                name: "Dr. Kevin Samuels",
-                specialty: "General Practitioner",
-                email: "dr.buchanan@clinicconnect.com",
-                phone: "(555) 123-4567"
+                id: loggedUser.id,
+                name: `Dr. ${loggedUser.firstName} ${loggedUser.lastName}`,
+                specialty: loggedUser.specialty || "General Practitioner",
+                email: loggedUser.email,
+                phone: loggedUser.phone || "(555) 123-4567"
             };
-            
-            updateDoctorProfileUI();
-            return doctorProfile;
         }
+        
+        // Update the UI with doctor data
+        updateDoctorProfileUI();
+        return doctorProfile;
     }
 
     // Update UI with doctor profile
     function updateDoctorProfileUI() {
-        if (doctorNameElement && doctorProfile) {
-            doctorNameElement.textContent = doctorProfile.name;
-            console.log('✅ Doctor name updated in UI:', doctorProfile.name);
+        if (doctorNameElement) {
+            if (doctorProfile && doctorProfile.name) {
+                doctorNameElement.textContent = doctorProfile.name;
+                console.log('✅ Doctor name updated in UI:', doctorProfile.name);
+            } else if (loggedUser.firstName) {
+                // Use logged-in user data as final fallback
+                doctorNameElement.textContent = `Dr. ${loggedUser.firstName} ${loggedUser.lastName}`;
+                console.log('✅ Using logged-in user name:', doctorNameElement.textContent);
+            } else {
+                doctorNameElement.textContent = "Doctor";
+                console.error('❌ No doctor name available');
+            }
         } else {
-            console.error('❌ Could not update doctor name - element or profile missing');
+            console.error('❌ Doctor name element not found');
         }
     }
 
@@ -422,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-
+    // Add refresh button
     const refreshBtn = document.createElement('button');
     refreshBtn.textContent = 'Refresh Data';
     refreshBtn.style.margin = '10px';
@@ -430,21 +491,21 @@ document.addEventListener('DOMContentLoaded', function() {
     refreshBtn.addEventListener('click', window.refreshAppointments);
     document.querySelector('.calendar-controls').appendChild(refreshBtn);
 
- 
+    // Initialize application
     async function initializeApp() {
         console.log('👨‍⚕️ Initializing application...');
         
+        // Initialize logout first
+        initLogout();
         
+        // Load profile and data
         await loadDoctorProfile();
-        
-    
         await loadBookings();
-        
 
         console.log('✅ All data loaded, generating calendar...');
         generateCalendar();
     }
 
- 
+    // Start the application
     initializeApp();
 });
