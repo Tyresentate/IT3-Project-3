@@ -31,6 +31,155 @@ const dbConfig = {
   password: 'password',
   database: 'clinicdb'
 };
+// --------------------------
+// Get doctor profile
+// --------------------------
+app.get('/doctor/profile', async (req, res) => {
+  try {
+    // Get the logged-in user from session or request
+    // For now, we'll get the first doctor as an example
+    const connection = await mysql.createConnection(dbConfig);
+    
+    const [doctors] = await connection.execute(`
+      SELECT 
+        d.doctor_id,
+        d.user_id,
+        d.specialization,
+        d.room_number,
+        d.contact_number,
+        u.first_name,
+        u.last_name,
+        u.email
+      FROM doctor d
+      JOIN user u ON d.user_id = u.user_id
+      LIMIT 1
+    `);
+
+    await connection.end();
+
+    if (doctors.length === 0) {
+      return res.status(404).json({ message: 'No doctor profile found' });
+    }
+
+    const doctor = doctors[0];
+    const doctorProfile = {
+      id: doctor.doctor_id,
+      name: `Dr. ${doctor.first_name} ${doctor.last_name}`,
+      specialty: doctor.specialization,
+      email: doctor.email,
+      phone: doctor.contact_number,
+      roomNumber: doctor.room_number
+    };
+
+    res.json(doctorProfile);
+  } catch (err) {
+    console.error('Error fetching doctor profile:', err);
+    res.status(500).json({ message: 'Failed to fetch doctor profile', error: err.message });
+  }
+});
+
+// --------------------------
+// Add test appointments (FIXED VERSION)
+// --------------------------
+app.post('/add-test-appointments', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    // Get first user to create appointments for
+    const [users] = await connection.execute('SELECT user_id FROM user LIMIT 1');
+    
+    if (users.length === 0) {
+      await connection.end();
+      return res.status(400).json({ message: 'No users found in database' });
+    }
+    
+    const userId = users[0].user_id;
+    
+    // Add test appointments for today and next few days
+    const today = new Date();
+    
+    // Format dates properly for MySQL
+    const formatDateForSQL = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const testAppointments = [
+      { date: formatDateForSQL(today), time: '09:00:00' },
+      { date: formatDateForSQL(today), time: '14:30:00' },
+      { date: formatDateForSQL(new Date(today.getTime() + 86400000)), time: '10:00:00' }, // Tomorrow
+      { date: formatDateForSQL(new Date(today.getTime() + 2 * 86400000)), time: '11:30:00' }, // Day after tomorrow
+    ];
+    
+    let appointmentsAdded = 0;
+    
+    for (const appointment of testAppointments) {
+      // Check if appointment already exists to avoid duplicates
+      const [existing] = await connection.execute(
+        'SELECT booking_id FROM bookings WHERE user_id = ? AND date = ? AND time = ?',
+        [userId, appointment.date, appointment.time]
+      );
+      
+      if (existing.length === 0) {
+        await connection.execute(
+          'INSERT INTO bookings (user_id, date, time) VALUES (?, ?, ?)',
+          [userId, appointment.date, appointment.time]
+        );
+        appointmentsAdded++;
+      }
+    }
+    
+    await connection.end();
+    
+    res.json({ 
+      message: 'Test appointments added successfully',
+      appointmentsAdded: appointmentsAdded,
+      userId: userId
+    });
+    
+  } catch (err) {
+    console.error('❌ Error adding test appointments:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --------------------------
+// Debug endpoint to check specific date appointments
+// --------------------------
+app.get('/debug-appointments/:date', async (req, res) => {
+  const date = req.params.date;
+  
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    const [appointments] = await connection.execute(`
+      SELECT 
+        b.booking_id,
+        b.user_id,
+        b.date,
+        b.time,
+        u.first_name,
+        u.last_name
+      FROM bookings b
+      JOIN user u ON b.user_id = u.user_id
+      WHERE b.date = ?
+      ORDER BY b.time
+    `, [date]);
+
+    await connection.end();
+    
+    res.json({
+      date: date,
+      totalAppointments: appointments.length,
+      appointments: appointments
+    });
+  } catch (err) {
+    console.error('❌ Debug error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // --------------------------
 // Register patient
@@ -211,7 +360,7 @@ app.post('/book', async (req, res) => {
 });
 
 // --------------------------
-// Get ALL bookings (FIXED - NO CONDITION KEYWORD)
+// Get ALL bookings (FIXED VERSION)
 // --------------------------
 app.get('/bookings', async (req, res) => {
   try {
@@ -222,27 +371,29 @@ app.get('/bookings', async (req, res) => {
         b.booking_id,
         b.user_id,
         b.date,
-        b.time,
-        b.created_at,
+        DATE_FORMAT(b.time, '%H:%i') as time,
         CONCAT(u.first_name, ' ', u.last_name) as name,
         'General Consultation' as reason,
         TIMESTAMPDIFF(YEAR, u.date_of_birth, CURDATE()) as age,
         'No additional notes' as notes
       FROM bookings b
       JOIN user u ON b.user_id = u.user_id
-      ORDER BY b.date DESC, b.time DESC
+      WHERE b.date >= CURDATE()
+      ORDER BY b.date ASC, b.time ASC
     `);
 
     await connection.end();
+    
+    console.log(`📊 Returning ${bookings.length} bookings from database`);
     res.json(bookings);
   } catch (err) {
-    console.error(err);
+    console.error('❌ Error fetching bookings:', err);
     res.status(500).json({ message: 'Failed to fetch bookings', error: err.message });
   }
 });
 
 // --------------------------
-// Get appointments for doctor (FIXED)
+// Get appointments for doctor
 // --------------------------
 app.get('/appointments', async (req, res) => {
   const { date } = req.query;
@@ -254,7 +405,7 @@ app.get('/appointments', async (req, res) => {
       SELECT 
         b.booking_id as id,
         CONCAT(u.first_name, ' ', u.last_name) as name,
-        b.time,
+        DATE_FORMAT(b.time, '%H:%i') as time,
         'Checkup' as reason,
         TIMESTAMPDIFF(YEAR, u.date_of_birth, CURDATE()) as age,
         'No additional notes' as notes
@@ -297,7 +448,9 @@ app.get('/appointments/:userId', async (req, res) => {
   }
 });
 
-
+// --------------------------
+// Get user bookings
+// --------------------------
 app.get('/bookings/user/:userId', async (req, res) => {
   const userId = req.params.userId;
   
@@ -308,7 +461,7 @@ app.get('/bookings/user/:userId', async (req, res) => {
       SELECT 
         booking_id as id,
         date,
-        time,
+        DATE_FORMAT(time, '%H:%i') as time,
         created_at,
         'General Checkup' as reason,
         'Confirmed' as status,
@@ -600,6 +753,94 @@ app.post('/patient-info', async (req, res) => {
     res.status(500).json({ message: 'Failed to save patient information', error: err.message });
   }
 });
+
+// --------------------------
+// Debug endpoint to check bookings data
+// --------------------------
+app.get('/debug-bookings', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    const [bookings] = await connection.execute(`
+      SELECT 
+        b.booking_id,
+        b.user_id,
+        b.date,
+        b.time,
+        u.first_name,
+        u.last_name,
+        u.date_of_birth
+      FROM bookings b
+      JOIN user u ON b.user_id = u.user_id
+      ORDER BY b.date DESC
+    `);
+
+    await connection.end();
+    
+    console.log('🔍 DEBUG - Raw bookings from database:', bookings);
+    res.json({
+      totalBookings: bookings.length,
+      bookings: bookings
+    });
+  } catch (err) {
+    console.error('❌ Debug error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --------------------------
+// Add test data endpoint
+// --------------------------
+app.post('/add-test-appointments', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    
+    // Get first user to create appointments for
+    const [users] = await connection.execute('SELECT user_id FROM user LIMIT 1');
+    
+    if (users.length === 0) {
+      await connection.end();
+      return res.status(400).json({ message: 'No users found in database' });
+    }
+    
+    const userId = users[0].user_id;
+    
+    // Add test appointments for today and next few days
+    const today = new Date();
+    const testAppointments = [
+      { date: today, time: '09:00:00' },
+      { date: today, time: '14:30:00' },
+      { date: new Date(today.getTime() + 86400000), time: '10:00:00' }, // Tomorrow
+      { date: new Date(today.getTime() + 2 * 86400000), time: '11:30:00' }, // Day after tomorrow
+    ];
+    
+    for (const appointment of testAppointments) {
+      await connection.execute(
+        'INSERT INTO bookings (user_id, date, time) VALUES (?, ?, ?)',
+        [userId, formatDateForSQL(appointment.date), appointment.time]
+      );
+    }
+    
+    await connection.end();
+    
+    res.json({ 
+      message: 'Test appointments added successfully',
+      appointmentsAdded: testAppointments.length,
+      userId: userId
+    });
+    
+  } catch (err) {
+    console.error('❌ Error adding test appointments:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+function formatDateForSQL(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
