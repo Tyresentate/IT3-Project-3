@@ -1,4 +1,4 @@
-// ViewSchedule.js - UPDATED VERSION WITH LOGOUT AND REAL USER DATA
+// ViewSchedule.js - COMPLETELY REDONE VERSION
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Loading ViewSchedule...');
     
@@ -20,78 +20,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const monthLabel = document.getElementById("monthLabel");
     const prevMonthBtn = document.getElementById("prevMonth");
     const nextMonthBtn = document.getElementById("nextMonth");
-    
-    // Profile elements
     const doctorNameElement = document.querySelector(".logged-in-text");
 
     let isMonthlyView = false;
     let currentMonth = new Date().getMonth();
     let currentYear = new Date().getFullYear();
     let allAppointments = [];
-    let doctorProfile = null;
 
-    // FAKE APPOINTMENTS DATA
-    const fakeAppointments = [
-        {
-            booking_id: 1,
-            user_id: 101,
-            date: new Date().toISOString().split('T')[0], // Today
-            time: "09:00",
-            name: "John Smith",
-            reason: "Annual Checkup",
-            age: "45",
-            notes: "Routine physical examination"
-        },
-        {
-            booking_id: 2,
-            user_id: 102,
-            date: new Date().toISOString().split('T')[0], // Today
-            time: "10:30", 
-            name: "Sarah Johnson",
-            reason: "Follow-up Visit",
-            age: "62",
-            notes: "Blood pressure monitoring"
-        },
-        {
-            booking_id: 3,
-            user_id: 103,
-            date: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Tomorrow
-            time: "14:00",
-            name: "Mike Davis",
-            reason: "Vaccination",
-            age: "28",
-            notes: "Flu shot scheduled"
-        },
-        {
-            booking_id: 4,
-            user_id: 104,
-            date: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0], // Day after tomorrow
-            time: "11:15",
-            name: "Emily Wilson",
-            reason: "Consultation",
-            age: "35",
-            notes: "Seasonal allergy symptoms"
+    // Initialize application
+    initApp();
+
+    async function initApp() {
+        console.log('👨‍⚕️ Initializing application...');
+        
+        // Set doctor name from logged in user
+        setDoctorName();
+        
+        // Initialize logout
+        initLogout();
+        
+        // Load appointments
+        await loadAppointments();
+        
+        // Generate calendar
+        generateCalendar();
+        
+        console.log('✅ Application initialized');
+    }
+
+    function setDoctorName() {
+        if (doctorNameElement && loggedUser.firstName) {
+            doctorNameElement.textContent = `Dr. ${loggedUser.firstName} ${loggedUser.lastName}`;
         }
-    ];
+    }
 
-    // Initialize logout functionality
     function initLogout() {
         const logoutBtn = document.getElementById("logoutBtn");
         const logoutModal = document.getElementById("logoutModal");
         const confirmLogout = document.getElementById("confirmLogout");
         const cancelLogout = document.getElementById("cancelLogout");
 
-        if (!logoutBtn) {
-            console.error('❌ Logout button not found!');
-            return;
-        }
+        if (!logoutBtn) return;
 
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
             if (logoutModal) {
                 logoutModal.style.display = "flex";
             } else {
-                // Fallback: direct logout if modal doesn't exist
                 performLogout();
             }
         });
@@ -102,18 +77,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (cancelLogout) {
             cancelLogout.addEventListener("click", () => {
-                if (logoutModal) {
-                    logoutModal.style.display = "none";
-                }
+                if (logoutModal) logoutModal.style.display = "none";
             });
         }
 
-        // Close modal when clicking outside
         if (logoutModal) {
             window.addEventListener("click", (e) => {
-                if (e.target === logoutModal) {
-                    logoutModal.style.display = "none";
-                }
+                if (e.target === logoutModal) logoutModal.style.display = "none";
             });
         }
     }
@@ -123,160 +93,140 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = "index.html";
     }
 
-    // Load doctor profile from server OR use logged-in user data
-    async function loadDoctorProfile() {
-        console.log('👨‍⚕️ Fetching doctor profile from server...');
-        
-        try {
-            // Try to get the logged-in doctor's profile
-            const response = await fetch('http://localhost:3000/doctor/profile', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            
-            if (response.ok) {
-                const profileData = await response.json();
-                doctorProfile = profileData;
-                console.log('✅ Doctor profile loaded:', doctorProfile);
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-        } catch (error) {
-            console.error('❌ Error loading doctor profile:', error);
-            console.log('📋 Using logged-in user data as fallback');
-            
-            // Fallback to logged-in user data
-            doctorProfile = {
-                id: loggedUser.id,
-                name: `Dr. ${loggedUser.firstName} ${loggedUser.lastName}`,
-                specialty: loggedUser.specialty || "General Practitioner",
-                email: loggedUser.email,
-                phone: loggedUser.phone || "(555) 123-4567"
-            };
-        }
-        
-        // Update the UI with doctor data
-        updateDoctorProfileUI();
-        return doctorProfile;
-    }
-
-    // Update UI with doctor profile
-    function updateDoctorProfileUI() {
-        if (doctorNameElement) {
-            if (doctorProfile && doctorProfile.name) {
-                doctorNameElement.textContent = doctorProfile.name;
-                console.log('✅ Doctor name updated in UI:', doctorProfile.name);
-            } else if (loggedUser.firstName) {
-                // Use logged-in user data as final fallback
-                doctorNameElement.textContent = `Dr. ${loggedUser.firstName} ${loggedUser.lastName}`;
-                console.log('✅ Using logged-in user name:', doctorNameElement.textContent);
-            } else {
-                doctorNameElement.textContent = "Doctor";
-                console.error('❌ No doctor name available');
-            }
-        } else {
-            console.error('❌ Doctor name element not found');
-        }
-    }
-
-    // Helper: format date as YYYY-MM-DD
-    function formatDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    // Load bookings from server
-    async function loadBookings() {
-        console.log('📥 Fetching from /bookings endpoint...');
+    // Load appointments from server
+    async function loadAppointments() {
+        console.log('📥 Loading appointments...');
         
         try {
             const response = await fetch('http://localhost:3000/bookings');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
             const bookings = await response.json();
+            console.log('✅ Received bookings:', bookings);
             
-            console.log('✅ Bookings received:', bookings);
+            // Transform data to match our expected format
+            allAppointments = bookings.map(booking => ({
+                id: booking.booking_id,
+                user_id: booking.user_id,
+                date: formatDatabaseDate(booking.date), // Ensure consistent date format
+                time: booking.time,
+                name: booking.name || `Patient ${booking.user_id}`,
+                reason: booking.reason || 'General Consultation',
+                age: booking.age || 'Not specified',
+                notes: booking.notes || 'No notes'
+            }));
             
-            // Use real data if available, otherwise use fake data
-            if (bookings && bookings.length > 0) {
-                allAppointments = bookings;
-                console.log('📊 Using REAL data from database');
-            } else {
-                allAppointments = fakeAppointments;
-                console.log('📊 Using FAKE data for demonstration');
-            }
-            
-            return allAppointments;
+            console.log(`📊 Loaded ${allAppointments.length} appointments`);
             
         } catch (error) {
-            console.error('❌ Error loading bookings:', error);
-            console.log('📊 Using FAKE data due to server error');
-            allAppointments = fakeAppointments;
-            return allAppointments;
+            console.error('❌ Error loading appointments:', error);
+            // Create some sample data for demonstration
+            allAppointments = createSampleAppointments();
+            console.log('📋 Using sample data');
         }
     }
 
-    // Generate weekly calendar
-    function generateCalendar() {
+    // Ensure dates are in YYYY-MM-DD format
+    function formatDatabaseDate(dateString) {
+        if (!dateString) return '';
+        
+        // If it's already in correct format, return as is
+        if (typeof dateString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+            return dateString;
+        }
+        
+        // If it's a Date object or other format, convert to YYYY-MM-DD
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString; // Return original if invalid
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        return `${year}-${month}-${day}`;
+    }
+
+    // Create sample appointments for demonstration
+    function createSampleAppointments() {
         const today = new Date();
-        const options = { weekday: "short" };
+        const sampleAppointments = [];
+        
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(today.getDate() + i);
+            const dateStr = formatDateForDisplay(date);
+            
+            // Add 1-3 appointments per day
+            const numAppointments = Math.floor(Math.random() * 3) + 1;
+            const times = ['09:00', '11:00', '14:00', '15:30'];
+            
+            for (let j = 0; j < numAppointments; j++) {
+                sampleAppointments.push({
+                    id: sampleAppointments.length + 1,
+                    user_id: 100 + sampleAppointments.length,
+                    date: dateStr,
+                    time: times[j] || '10:00',
+                    name: `Patient ${sampleAppointments.length + 1}`,
+                    reason: ['Checkup', 'Consultation', 'Follow-up', 'Vaccination'][j % 4],
+                    age: Math.floor(Math.random() * 50) + 20,
+                    notes: 'Sample appointment for demonstration'
+                });
+            }
+        }
+        
+        return sampleAppointments;
+    }
+
+    // Generate weekly calendar view
+    function generateCalendar() {
+        if (isMonthlyView) {
+            generateMonthCalendar(currentYear, currentMonth);
+        } else {
+            generateWeekCalendar();
+        }
+    }
+
+    function generateWeekCalendar() {
         calendarBar.innerHTML = "";
         calendarBar.classList.remove("monthly");
+        monthNav.style.display = "none";
+        toggleBtn.textContent = "Switch to Monthly View";
+
+        const today = new Date();
+        let activeDateSet = false;
 
         for (let i = 0; i < 7; i++) {
             const date = new Date();
             date.setDate(today.getDate() + i);
-            const dayName = date.toLocaleDateString("en-US", options);
-            const dayNum = date.getDate();
-            const monthName = date.toLocaleDateString("en-US", { month: "short" });
-            const dateStr = formatDate(date);
-
-            const dayEl = document.createElement("div");
-            dayEl.classList.add("day");
-            dayEl.dataset.date = dateStr;
-            dayEl.innerHTML = `
-                <p>${dayName}</p>
-                <span>${dayNum} ${monthName}</span>
-            `;
-
-            // Show appointment count for this day
-            const dayAppointments = allAppointments.filter(apt => apt.date === dateStr);
-            if (dayAppointments.length > 0) {
-                dayEl.innerHTML += `<div class="appointment-count">${dayAppointments.length}</div>`;
-            }
-
-            if (i === 0) {
-                dayEl.classList.add('today');
+            const dateStr = formatDateForDisplay(date);
+            
+            const dayEl = createDayElement(date, dateStr);
+            
+            // Set today as active by default
+            if (i === 0 && !activeDateSet) {
                 dayEl.classList.add('active');
                 loadSchedule(dateStr);
+                activeDateSet = true;
             }
-
-            dayEl.addEventListener("click", () => {
-                document.querySelectorAll(".calendar-bar .day").forEach(d => d.classList.remove("active"));
-                dayEl.classList.add("active");
-                loadSchedule(dateStr);
-            });
 
             calendarBar.appendChild(dayEl);
         }
     }
 
-    // Generate monthly calendar
     function generateMonthCalendar(year, month) {
         calendarBar.innerHTML = "";
         calendarBar.classList.add("monthly");
+        monthNav.style.display = "flex";
+        toggleBtn.textContent = "Switch to Weekly View";
+
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const today = new Date();
-        const options = { weekday: "short" };
 
-        monthLabel.textContent = firstDay.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+        monthLabel.textContent = firstDay.toLocaleDateString("en-US", { 
+            month: "long", 
+            year: "numeric" 
+        });
 
         // Add empty cells for days before the first day of month
         const firstDayOfWeek = firstDay.getDay();
@@ -286,94 +236,121 @@ document.addEventListener('DOMContentLoaded', function() {
             calendarBar.appendChild(emptyCell);
         }
 
-        for (let d = 1; d <= lastDay.getDate(); d++) {
-            const date = new Date(year, month, d);
-            const dayName = date.toLocaleDateString("en-US", options);
-            const dateStr = formatDate(date);
+        let activeDateSet = false;
 
-            const dayEl = document.createElement("div");
-            dayEl.classList.add("day");
-            dayEl.dataset.date = dateStr;
-            dayEl.innerHTML = `
-                <p>${dayName}</p>
-                <span>${d}</span>
-            `;
-
-            // Show appointment count for this day
-            const dayAppointments = allAppointments.filter(apt => apt.date === dateStr);
-            if (dayAppointments.length > 0) {
-                dayEl.innerHTML += `<div class="appointment-count">${dayAppointments.length}</div>`;
-            }
-
-            if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                dayEl.classList.add('today');
-                if (!document.querySelector('.day.active')) {
-                    dayEl.classList.add('active');
-                    loadSchedule(dateStr);
-                }
-            }
-
-            dayEl.addEventListener("click", () => {
-                document.querySelectorAll(".calendar-bar .day").forEach(d => d.classList.remove("active"));
-                dayEl.classList.add("active");
+        // Add days of the month
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+            const date = new Date(year, month, day);
+            const dateStr = formatDateForDisplay(date);
+            
+            const dayEl = createDayElement(date, dateStr);
+            
+            // Set today as active if it's in this month and no active date set yet
+            if (day === today.getDate() && 
+                month === today.getMonth() && 
+                year === today.getFullYear() && 
+                !activeDateSet) {
+                dayEl.classList.add('active');
                 loadSchedule(dateStr);
-            });
+                activeDateSet = true;
+            }
 
             calendarBar.appendChild(dayEl);
         }
     }
 
+    function createDayElement(date, dateStr) {
+        const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+        const dayNum = date.getDate();
+        const monthName = date.toLocaleDateString("en-US", { month: "short" });
+        
+        const dayEl = document.createElement("div");
+        dayEl.classList.add("day");
+        dayEl.dataset.date = dateStr;
+        
+        dayEl.innerHTML = `
+            <p>${dayName}</p>
+            <span>${dayNum} ${monthName}</span>
+        `;
+
+        // Show appointment count
+        const dayAppointments = allAppointments.filter(apt => apt.date === dateStr);
+        if (dayAppointments.length > 0) {
+            dayEl.innerHTML += `<div class="appointment-count">${dayAppointments.length}</div>`;
+        }
+
+        // Mark today
+        const today = new Date();
+        if (date.toDateString() === today.toDateString()) {
+            dayEl.classList.add('today');
+        }
+
+        // Click handler
+        dayEl.addEventListener("click", () => {
+            document.querySelectorAll(".calendar-bar .day").forEach(d => d.classList.remove("active"));
+            dayEl.classList.add("active");
+            loadSchedule(dateStr);
+        });
+
+        return dayEl;
+    }
+
+    function formatDateForDisplay(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     // Load schedule for specific date
     function loadSchedule(dateStr) {
+        console.log(`📅 Loading schedule for: ${dateStr}`);
+        
         scheduleList.innerHTML = "<div class='loading-message'>Loading appointments...</div>";
         patientDetails.innerHTML = "<p>Select a patient to view details.</p>";
 
-        // Filter appointments for the selected date
-        const filteredAppointments = allAppointments.filter(appt => {
-            if (!appt || !appt.date) return false;
+        // Small delay to show loading state
+        setTimeout(() => {
+            const filteredAppointments = allAppointments.filter(appt => {
+                return appt.date === dateStr;
+            });
             
-            let apptDate = appt.date;
-            if (apptDate.includes('T')) {
-                apptDate = apptDate.split('T')[0];
-            }
-            
-            return apptDate === dateStr;
-        });
-        
-        displayAppointments(filteredAppointments);
+            displayAppointments(filteredAppointments, dateStr);
+        }, 100);
     }
 
-    function displayAppointments(appointments) {
+    function displayAppointments(appointments, dateStr) {
         scheduleList.innerHTML = "";
 
-        if (!Array.isArray(appointments) || appointments.length === 0) {
+        if (!appointments || appointments.length === 0) {
             scheduleList.innerHTML = `
                 <div class='no-appointments'>
-                    <p>No appointments scheduled for this date.</p>
-                    <p class="help-text">Book an appointment through the patient portal to see it here.</p>
+                    <p>No appointments scheduled for ${formatDisplayDate(dateStr)}.</p>
+                    <p class="help-text">Appointments will appear here when booked by patients.</p>
                 </div>`;
             patientDetails.innerHTML = "<p>No patients to display.</p>";
             return;
         }
 
-        // Sort appointments by time
+        console.log(`📋 Displaying ${appointments.length} appointments for ${dateStr}`);
+
+        // Sort by time
         const sortedAppointments = appointments.sort((a, b) => {
-            const timeA = a.time || '00:00';
-            const timeB = b.time || '00:00';
-            return timeA.localeCompare(timeB);
+            return (a.time || '00:00').localeCompare(b.time || '00:00');
         });
 
         sortedAppointments.forEach((appt, index) => {
             const item = document.createElement("div");
             item.classList.add("schedule-item");
-            item.dataset.appointmentIndex = index;
+            item.dataset.appointmentId = appt.id;
+            
             item.innerHTML = `
                 <div class="time">${formatTime(appt.time)}</div>
                 <div class="patient">
                     <img src="images/Generic avatar.png" alt="Patient" />
                     <div class="details">
-                        <p><strong>${appt.name || 'Patient'}</strong></p>
-                        <p>${appt.reason || 'Appointment'}</p>
+                        <p><strong>${appt.name}</strong></p>
+                        <p>${appt.reason}</p>
                     </div>
                 </div>
             `;
@@ -384,25 +361,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 showPatientDetails(appt);
             });
 
+            // Auto-select first appointment
             if (index === 0) {
-                setTimeout(() => {
-                    item.classList.add("active");
-                    showPatientDetails(appt);
-                }, 100);
+                item.classList.add("active");
+                showPatientDetails(appt);
             }
 
             scheduleList.appendChild(item);
         });
     }
 
-    // Format time for display
     function formatTime(timeString) {
-        if (!timeString || timeString === "--:--") return '--:--';
+        if (!timeString) return '--:--';
         
         try {
+            // Handle both "HH:MM" and "HH:MM:SS" formats
             const timeParts = timeString.split(':');
             const hours = parseInt(timeParts[0]);
             const minutes = timeParts[1];
+            
+            if (isNaN(hours)) return timeString;
             
             const period = hours >= 12 ? 'PM' : 'AM';
             const displayHours = hours % 12 || 12;
@@ -413,38 +391,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show patient details
+    function formatDisplayDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("en-US", { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+
     function showPatientDetails(appt) {
         patientDetails.innerHTML = `
             <div class="patient-details-content">
                 <img src="images/Generic avatar.png" alt="Patient" />
-                <h2>${appt.name || 'Patient'}</h2>
+                <h2>${appt.name}</h2>
                 <div class="patient-info">
                     <p><strong>Appointment Time:</strong> <span>${formatTime(appt.time)}</span></p>
-                    <p><strong>Appointment Date:</strong> <span>${appt.date}</span></p>
-                    <p><strong>Reason:</strong> <span>${appt.reason || 'Not specified'}</span></p>
-                    <p><strong>Age:</strong> <span>${appt.age || 'Not specified'}</span></p>
-                    <p><strong>Notes:</strong> <span>${appt.notes || 'No notes'}</span></p>
+                    <p><strong>Appointment Date:</strong> <span>${formatDisplayDate(appt.date)}</span></p>
+                    <p><strong>Reason:</strong> <span>${appt.reason}</span></p>
+                    <p><strong>Age:</strong> <span>${appt.age}</span></p>
+                    <p><strong>Notes:</strong> <span>${appt.notes}</span></p>
                 </div>
             </div>
         `;
     }
 
-    // Toggle weekly/monthly
+    // Event Listeners
     toggleBtn.addEventListener("click", () => {
         isMonthlyView = !isMonthlyView;
-        if (isMonthlyView) {
-            toggleBtn.textContent = "Switch to Weekly View";
-            monthNav.style.display = "flex";
-            generateMonthCalendar(currentYear, currentMonth);
-        } else {
-            toggleBtn.textContent = "Switch to Monthly View";
-            monthNav.style.display = "none";
-            generateCalendar();
-        }
+        generateCalendar();
     });
 
-    // Month navigation
     prevMonthBtn.addEventListener("click", () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -463,20 +441,15 @@ document.addEventListener('DOMContentLoaded', function() {
         generateMonthCalendar(currentYear, currentMonth);
     });
 
-    // Refresh appointments and profile
+    // Refresh function
     window.refreshAppointments = async function() {
-        console.log('🔄 Refreshing data...');
-        await loadDoctorProfile();
-        await loadBookings();
+        console.log('🔄 Refreshing appointments...');
+        await loadAppointments();
         
         // Reload current view
-        if (isMonthlyView) {
-            generateMonthCalendar(currentYear, currentMonth);
-        } else {
-            generateCalendar();
-        }
+        generateCalendar();
         
-        // Reload current date
+        // Reload current date schedule
         const activeDate = document.querySelector('.day.active')?.dataset.date;
         if (activeDate) {
             loadSchedule(activeDate);
@@ -485,27 +458,73 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add refresh button
     const refreshBtn = document.createElement('button');
-    refreshBtn.textContent = 'Refresh Data';
+    refreshBtn.textContent = 'Refresh Appointments';
     refreshBtn.style.margin = '10px';
-    refreshBtn.style.padding = '5px 10px';
+    refreshBtn.style.padding = '8px 16px';
+    refreshBtn.style.backgroundColor = '#007bff';
+    refreshBtn.style.color = 'white';
+    refreshBtn.style.border = 'none';
+    refreshBtn.style.borderRadius = '4px';
+    refreshBtn.style.cursor = 'pointer';
     refreshBtn.addEventListener('click', window.refreshAppointments);
-    document.querySelector('.calendar-controls').appendChild(refreshBtn);
 
-    // Initialize application
-    async function initializeApp() {
-        console.log('👨‍⚕️ Initializing application...');
+    // Add debug button
+    const debugBtn = document.createElement('button');
+    debugBtn.textContent = 'Debug Info';
+    debugBtn.style.margin = '10px';
+    debugBtn.style.padding = '8px 16px';
+    debugBtn.style.backgroundColor = '#28a745';
+    debugBtn.style.color = 'white';
+    debugBtn.style.border = 'none';
+    debugBtn.style.borderRadius = '4px';
+    debugBtn.style.cursor = 'pointer';
+    debugBtn.addEventListener('click', () => {
+        console.log('🔍 DEBUG INFO:');
+        console.log('Total appointments:', allAppointments.length);
+        console.log('All appointments:', allAppointments);
+        console.log('Current date:', formatDateForDisplay(new Date()));
         
-        // Initialize logout first
-        initLogout();
+        const activeDate = document.querySelector('.day.active')?.dataset.date;
+        console.log('Active date:', activeDate);
         
-        // Load profile and data
-        await loadDoctorProfile();
-        await loadBookings();
+        if (activeDate) {
+            const dayAppointments = allAppointments.filter(apt => apt.date === activeDate);
+            console.log(`Appointments for ${activeDate}:`, dayAppointments);
+        }
+    });
 
-        console.log('✅ All data loaded, generating calendar...');
-        generateCalendar();
+    const controls = document.querySelector('.calendar-controls');
+    if (controls) {
+        controls.appendChild(refreshBtn);
+        controls.appendChild(debugBtn);
     }
 
-    // Start the application
-    initializeApp();
+    // Add some test data if no appointments exist
+    window.addTestAppointments = function() {
+        if (allAppointments.length === 0) {
+            allAppointments = createSampleAppointments();
+            refreshAppointments();
+            alert('Sample appointments added!');
+        } else {
+            alert('Appointments already exist. Use refresh to reload data.');
+        }
+    };
+
+    // Add test data button (only show if no appointments)
+    if (allAppointments.length === 0) {
+        const testDataBtn = document.createElement('button');
+        testDataBtn.textContent = 'Add Sample Data';
+        testDataBtn.style.margin = '10px';
+        testDataBtn.style.padding = '8px 16px';
+        testDataBtn.style.backgroundColor = '#dc3545';
+        testDataBtn.style.color = 'white';
+        testDataBtn.style.border = 'none';
+        testDataBtn.style.borderRadius = '4px';
+        testDataBtn.style.cursor = 'pointer';
+        testDataBtn.addEventListener('click', window.addTestAppointments);
+        
+        if (controls) {
+            controls.appendChild(testDataBtn);
+        }
+    }
 });
