@@ -297,9 +297,7 @@ app.get('/appointments/:userId', async (req, res) => {
   }
 });
 
-// --------------------------
-// Get appointments for specific user (alternative endpoint)
-// --------------------------
+
 app.get('/bookings/user/:userId', async (req, res) => {
   const userId = req.params.userId;
   
